@@ -15,14 +15,6 @@
             $this->extensiones = get_loaded_extensions();
             $this->memoryLimit = ini_get('memory_limit');
         }
-
-        function extensionesVersionPHP(){
-            if($this->versionPhp < 7.4){
-                return $this->getExtensionesRecomendables("extensionesRm56");
-            }else{
-                return $this->getExtensionesRecomendables("extensionesRm74");
-            }
-        }
         
         function extensionesCoincidentes($extensionesRmV)
         {
@@ -90,8 +82,8 @@
                     return  $valor > $numero;
                 }
             });
-            //return $resultado;
-            return $media = $media/count($consumoCPU);
+            return $resultado;
+            $media = $media/count($consumoCPU);
 /*
             print_r($consumoCPU);
             echo "<br>";
@@ -166,7 +158,7 @@
 
         function __toString()
         {
-            return "Versión: $this->versionPhp / Extensiones Recomendadas". var_dump($this->extensionesVersionPHP());
+            return "Versión: $this->versionPhp / Extensiones";
         }
     }
 

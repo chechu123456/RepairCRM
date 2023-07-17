@@ -2,11 +2,10 @@
     require("clases/Server.php");
     require("clases/WordPress.php");
     require("clases/Fichero.php");
-    /*
+
     require("clases/CapturaPantalla.php");
     require("pdfcrowd/pdfcrowd.php");
     require("htmltojpeg/HtmlToJpeg.php");
-*/
 
 
     header('Access-Control-Allow-Origin: *');
@@ -29,18 +28,23 @@
 </head>
 <body>
     <?php
-
-   
-
-  
        
-    if( isset($_POST['crmOpcion'] )){
-
+    if( isset($_POST['crmOpcion']) &&  isset($_POST['url']) ){
+    
         $crmOpcion = $_POST['crmOpcion'];
+        $url = $_POST['url'];
+
         $valoresExtra = array();
 
         funcionesServer(getUser());
-        
+
+        if(isset($_POST['pluginsWp']) ){
+            $pluginsWp = $_POST['pluginsWp'];
+        }else if(isset($_POST['modulosPr'])){
+            $modulosPr = $_POST['modulosPr'];
+        }
+
+
         if(isset($_POST['extra'])){
             foreach ($_POST['extra'] as $extra) {
                 array_push($valoresExtra, $extra);
@@ -49,10 +53,12 @@
             echo "<p>No hay ningún extra seleccionados</p>";
         }
 
+
         if( $crmOpcion === "prestashop" && isset($_POST['modulosPr'])){
 
         }else if($crmOpcion === "wordpress" && isset($_POST['pluginsWp']) ){
-            funcionesWordPress(getRutaInstalacion(), $valoresExtra);
+
+            funcionesWordPress(getRutaInstalacion(), $pluginsWp, $valoresExtra, $url);
 
         }else{
             echo "<p>No se ha seleccionado una opción dentro del CRM escogido</p>";
@@ -87,14 +93,22 @@
         echo "<br>";
         print_r($server->getConsumoCPU($usuario));
         echo "<br>";
-        //print_r($server->getExtensionesRecomendables("extensionesRm74"));
+        print_r($server->getExtensionesRecomendables("extensionesRm74"));
     }
   
-    function funcionesWordPress($rutaInstalación, $extra){
+    function funcionesWordPress($rutaInstalación, $pluginsWp, $extra, $url){
         $wp = new WordPress($rutaInstalación, $extra);
         echo "<br>". $wp->version . "<br>";
+
+        var_dump($wp->getPluginsThemeFailed());
     
-        
+        //$fichero = new CapturaPantalla($url);
+
+        $fichero = new Fichero("../wp-content/plugins/", $url);
+        var_dump($pluginsWp);
+        //$pluginsWp --> onALLpluigns, offALLplugins, offErrorPlugins
+        $fichero->obtenerCarpetasDirectorio($pluginsWp, $wp->getPluginsThemeFailed());
+
         /*
         var_dump($wp->getErrorLog());
         var_dump($wp->getErrorsFatal());

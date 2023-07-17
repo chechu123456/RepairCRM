@@ -1,7 +1,7 @@
 <?php
     class CapturaPantalla extends Fichero{
-        public String $url;
-        public array $nombFicheros = array();
+        public $url;
+        public $nombFicheros = array();
 
         function __construct($url){
             $this->url = $url;

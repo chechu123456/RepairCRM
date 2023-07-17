@@ -22,7 +22,7 @@
 
      
 
-        function obtenerCarpetasDirectorio($accion){
+        function obtenerCarpetasDirectorio($accion, $pluginFail){
             $this->borrarCache();
             $directorio = opendir($this->directorio);
             // Recorre todos los elementos del directorio
@@ -32,12 +32,17 @@
                     // Si es un directorio se recorre recursivamente
                     if (is_dir($this->directorio. $archivo)) {
                         $this->listarContenido($archivo);
-                        if($accion == "activar"){
+                        if($accion == "onALLplugins"){
                             $this->comprobarPluginDesactivado($this->directorio.$archivo);
-                            echo $this->craerPag($archivo);
-                        }elseif($accion == "desactivar"){                    
+                            echo $this->crearPag($archivo);
+                        }elseif($accion == "offALLplugins"){                    
                             $this->comprobarPluginActivado($this->directorio.$archivo); 
-                        }else{
+                        }elseif($accion == "offErrorPlugins"){
+                            var_dump($pluginFail);
+                            if(in_array($archivo,$pluginFail)){
+                                $this->comprobarPluginActivadoPluginFail($this->directorio.$archivo, $pluginFail); 
+                            }
+                        }else{                            
                             echo "Error solicitud al renombrar los ficheros";
                         }
                     } 
@@ -74,7 +79,7 @@
 
         function comprobarPluginActivado($plugin){
             
-            if( !preg_match("/\w*_automatic_old$/",$plugin)){
+            if( !preg_match("/\w*_automatic_old$/",$plugin) ){
                 $this->desactivarPlugins($plugin);
                 return true;
             }else{
@@ -83,11 +88,35 @@
             
         }
 
-        function craerPag($plugin){
-            echo $plugin;
+        function comprobarPluginActivadoPluginFail($plugin, $pluginFail){
+            echo "<h1>".var_dump($pluginFail). "</h1>";
+            if( !preg_match("/\w*_automatic_old$/",$plugin) ){
+                $this->desactivarPlugins($plugin);
+                return true;
+            }else{
+                return false;
+            }
+            
+        }
+        
+
+        function crearPag($plugin){
             $ruta = "estados/".$plugin.".html";
-            $this->crearFichero($ruta, file_get_contents($this->url));
-            return "<embed src='$ruta' width='100%' height='800px' onerror=\"alert('URL invalid !!');\" />";
+            echo $plugin ."<br>" . $ruta;
+            $this->crearFichero($ruta, file_get_contents($this->url), "w");
+
+    /* OTRA ALTERNATIVA A PROBAR
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch,CURLOPT_URL,$this->url);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+            curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.13 (KHTML, like Gecko) Chrome/0.A.B.C Safari/525.13");
+            $data = curl_exec($ch);
+            curl_close($ch);
+            return $data;
+    */
+
+            return  "<embed src='$ruta' width='100%' height='800px' onerror=\"alert('URL invalid !!');\" />";
             //return "<iframe width='300' height='200'src='$ruta'></iframe>";
         }
 
