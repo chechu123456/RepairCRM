@@ -62,11 +62,11 @@
                         <label for="mostrarErrorLog">Mostrar error_log hoy</label>
                     </p>
                     <p>
-                        <input type="checkbox" name="extra[]" value="mostrarErrorLog"  id="eliminarErrorLog" >
+                        <input type="radio" name="extra[]" value="eliminarErrorLog"  id="eliminarErrorLog" >
                         <label for="eliminarErrorLog">Eliminar error_log al desactivar plugins</label>
                     </p>
                     <p>
-                        <input type="checkbox" name="extra[]" value="mostrarErrorLog" id="renombrarErrorLog" checked="checked">
+                        <input type="radio" name="extra[]" value="renombrarErrorLog" id="renombrarErrorLog" checked="checked">
                         <label for="renombrarErrorLog">Renombrar error_log al desactivar plugins</label>
                     </p>
                 </div>

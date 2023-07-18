@@ -28,7 +28,7 @@
 </head>
 <body>
     <?php
-       
+    //var_dump($_POST);
     if( isset($_POST['crmOpcion']) &&  isset($_POST['url']) ){
     
         $crmOpcion = $_POST['crmOpcion'];
@@ -83,6 +83,13 @@
 
     function funcionesServer($usuario){
         $server = new Server();
+
+        if($server->versionPhp<7.4){
+            $extensionesRm = "extensionesRm56";
+        }else if($server->versionPhp >= 7.4){
+            $extensionesRm = "extensionesRm74";
+        }
+        
         //echo $server->__toString();
     
         //print_r($server->getConsumoCPU());
@@ -93,21 +100,23 @@
         echo "<br>";
         print_r($server->getConsumoCPU($usuario));
         echo "<br>";
-        print_r($server->getExtensionesRecomendables("extensionesRm74"));
+        print_r($server->getExtensionesRecomendables($extensionesRm));
     }
   
     function funcionesWordPress($rutaInstalación, $pluginsWp, $extra, $url){
-        $wp = new WordPress($rutaInstalación, $extra);
+        $wp = new WordPress($rutaInstalación, $pluginsWp, $extra);
         echo "<br>". $wp->version . "<br>";
 
-        var_dump($wp->getPluginsThemeFailed());
+        //var_dump($wp->getPluginsThemeFailed());
     
         //$fichero = new CapturaPantalla($url);
 
         $fichero = new Fichero("../wp-content/plugins/", $url);
-        var_dump($pluginsWp);
         //$pluginsWp --> onALLpluigns, offALLplugins, offErrorPlugins
         $fichero->obtenerCarpetasDirectorio($pluginsWp, $wp->getPluginsThemeFailed());
+
+        aplicarExtras($wp,$extra);
+        $fichero->ficheros_vacios();
 
         /*
         var_dump($wp->getErrorLog());
@@ -124,6 +133,12 @@
         print_r($fichero->ficheros_vacios("../"));
     */
     
+    }
+
+    function aplicarExtras($crm, $extra){
+        if(array_search("mostrarErrorLog", $extra)){
+            echo var_export($crm->errorLogRaiz,true);
+        }
     }
 
    

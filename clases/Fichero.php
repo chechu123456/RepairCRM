@@ -49,7 +49,6 @@
                 }
             }
 
-
         }
 
  
@@ -180,10 +179,10 @@
         }
 
         //Obtener nombre de los ficheros vacios o que tienen 0 bytes
-        function ficheros_vacios($directorio) {
+        function ficheros_vacios() {
             $extension = 'php';
 
-            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directorio));
+            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->directorio));
             foreach ($iterator as $archivo) {
                 if ($archivo->isFile()) {
                     $nombreArchivo = $archivo->getFilename();

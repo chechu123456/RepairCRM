@@ -9,6 +9,9 @@ class Crm{
     public $pluginsThemeFail = [];
     public $pluginsFail = [];
     public $themeFail = [];
+    public $palabrasAbuscarError = [];
+    public $pluginsWp = "";
+    public $extra = [];
 
 
     public function __construct() {
@@ -26,6 +29,16 @@ class Crm{
     public function setErrorLog($pathErrorLog){
         $this->pathErrorLog = $pathErrorLog;
     }
+
+    public function setPluginsWp($pluginsWp){
+        $this->pluginsWp = $pluginsWp;
+    }
+
+    public function setExtra($extra){
+        $this->extra = $extra;
+    }
+
+
 
     //Obtener Versión
     public function getVersion(){
@@ -60,37 +73,43 @@ class Crm{
 
     //Obtener los ErrorLogs de la web
     public function getErrorLog(){
-        $today = date("d-M-Y");
-        //Obtener las últimas líneas del fichero del día de hoy
-        exec("tail -25 ".$this->pathErrorLog[0]." | grep '$today'", $errorToday);
+        echo "<h1>$this->pluginsWp</h1>";
+        if(empty($this->errorLogRaiz)){
+            $today = date("d-M-Y");
+            //Obtener las últimas líneas del fichero del día de hoy
+            exec("tail -25 ".$this->pathErrorLog[0]." | grep '$today'", $errorToday);
 
-        //Si no hay Errores en el fichero del raiz del wordpress
-        if(empty($errorToday)){
-            array_push($this->errorLogRaiz,"<p>No se encontraron errores en el errorLog --> ".$this->pathErrorLog[0] ." - Buscando errores en ". $this->pathErrorLog[1]."</p>");
+            //Si no hay Errores en el fichero del raiz del wordpress
+            if(empty($errorToday)){
+                array_push($this->errorLogRaiz,"<p>No se encontraron errores en el errorLog --> ".$this->pathErrorLog[0] ." - Buscando errores en ". $this->pathErrorLog[1]."</p>");
 
-            //Buscar si hay errores de hoy en el fichero del wp-admin
-            exec("tail -25 ".$this->pathErrorLog[1]." | grep '$today'", $errorToday);
+                //Buscar si hay errores de hoy en el fichero del wp-admin
+                exec("tail -25 ".$this->pathErrorLog[1]." | grep '$today'", $errorToday);
 
-                //Si no hay Errores en el fichero del wp-admin, coger los últimos errores encontrados de cualquier fecha
-                if(empty($errorToday)){
-                    array_push($this->errorLogRaiz,"<p>No se encontraron errores en el errorLog --> ". $this->pathErrorLog[1] ." - Buscando errores recientes en". $this->pathErrorLog[0] ." </p>");
-                    exec("tail -25 ".$this->pathErrorLog[1]."", $lastErrors);
+                    //Si no hay Errores en el fichero del wp-admin, coger los últimos errores encontrados de cualquier fecha
+                    if(empty($errorToday) && $this->pluginsWp != "offErrorPlugins"){
+                        array_push($this->errorLogRaiz,"<p>No se encontraron errores en el errorLog --> ". $this->pathErrorLog[1] ." - Buscando errores recientes en". $this->pathErrorLog[0] ." </p>");
+                        exec("tail -25 ".$this->pathErrorLog[1]."", $lastErrors);
 
-                    //Si no hay errores en ningún fichero, indicarlo
-                    if(empty($lastErrors)){
-                        array_push($this->errorLogRaiz,"<p>No se encontraron errores en ningún errorLog </p>");
+                        //Si no hay errores en ningún fichero, indicarlo
+                        if(empty($lastErrors)){
+                            array_push($this->errorLogRaiz,"<p>No se encontraron errores en ningún errorLog </p>");
+                        }else{
+                            array_push($this->errorLogRaiz, $lastErrors);
+                        }
+
+                    }elseif($this->pluginsWp == "offErrorPlugins"){
+                        echo "<p>No se encontraron errores en el día de hoy y no se han desactivado ningún plugin</p>";
                     }else{
-                        array_push($this->errorLogRaiz, $lastErrors);
+                        array_push($this->errorLogRaiz, $errorToday);
                     }
-
-                }else{
-                    array_push($this->errorLogRaiz, $errorToday);
-                }
-           
-        }else{
-            array_push($this->errorLogRaiz,$errorToday);
+            
+            }else{
+                array_push($this->errorLogRaiz,$errorToday);
+            }
+            return $this->errorLogRaiz;
         }
-        return $this->errorLogRaiz;
+        
     }
 
     //Encontrar dentro del Fichero error log, los Fatal Errors
@@ -110,6 +129,8 @@ class Crm{
     public function getPluginsThemeFailed(){
         $this->getErrorLog();
         $this->getErrorsFatal();
+        $palabras =   $this->palabrasAbuscarError;
+        //Borrar - Solo VALIDO PARA WORDPRESS
         $palabras =  array('plugins', 'themes');
         
         array_walk_recursive($this->arrayPluginsThemeFailed, function ($value, $key) use ($palabras) {
