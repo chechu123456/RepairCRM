@@ -31,24 +31,27 @@
                     <input type="radio" name="modulosPr" id="modulosPr" value="onAll">
                     <label for="modulosPr">Activar todos los módulos de Prestashop</label>
                     <input type="radio" name="modulosPr" id="modulosPr" value="offAll"  checked="checked">
-                    <label for="modulosPr">Desactivar todos módulos o plugins</label>
+                    <label for="modulosPr">Desactivar todos módulo</label>
                     <input type="radio" name="modulosPr" id="modulosPr" value="offBase">
                     <label for="modulosPr">Desactivar módulos base de Prestashop</label>
                     <input type="radio" name="modulosPr" id="modulosPr" value="offAny">
                     <label for="">Desactivar TODOS los módulos MENOS los base de Prestashop</label>
                     <input type="radio" name="modulosPr" id="modulosPr" value="offErrors">
-                    <label for="">Desactivar SOLO los módulos o plugins que aparecen en el errorlog </label>
+                    <label for="">Desactivar SOLO los módulos que aparecen en el errorlog </label>
+                    <input type="radio" name="modulosPr" id="modulosPr" value="nothing">
+                    <label for="">No hacer cambios</label>
                 </div>
                 <hr>
                 <div class="wordpress ocultar">
                     <h1>WordPress</h1>
                     <p><input type="radio" name="pluginsWp" id="pluginsWp" value="onALLplugins"> <label for="pluginsWp">Activar todos módulos o plugins</label></p>
-                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offALLplugins"  checked="checked"> <label for="pluginsWp" >Desactivar todos módulos o plugins </label></p>
-                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offErrorPlugins"> <label for="pluginsWp">Desactivar SOLO los módulos o plugins que aparecen en el errorlog </label></p>
+                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offALLplugins"  checked="checked"> <label for="pluginsWp" >Desactivar todos plugins </label></p>
+                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offErrorPlugins"> <label for="pluginsWp">Desactivar SOLO los plugins que aparecen en el errorlog </label></p>
+                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="nothing"> <label for="pluginsWp">No hacer cambios</label></p>
                 </div>
                 <hr>
                 <div class="extra">
-                    <label for="extra">Opciones extra</label>
+                    <h3>Opciones extra</h3>
                     <p><input type="checkbox" name="extra[]" value="emptyFiles" id="extra" checked="checked" >Comprobar ficheros vacíos</p>
                     <p><input type="checkbox" name="extra[]" value="theme" id="extra" checked="checked">Verificar Tema en uso y existencia de ficheros</p>
                     <p><input type="checkbox" name="extra[]" value="cache" id="extra" checked="checked">Borrar cache LiteSpeed por cada plugin activado</p>
@@ -57,6 +60,7 @@
                 <hr>
 
                 <div class="errorLog">
+                    <h3>Error_logs:</h3>
                     <p>
                         <input type="checkbox" name="extra[]"  value="mostrarErrorLog" id="mostrarErrorLog" >
                         <label for="mostrarErrorLog">Mostrar error_log hoy</label>
@@ -66,8 +70,12 @@
                         <label for="eliminarErrorLog">Eliminar error_log al desactivar plugins</label>
                     </p>
                     <p>
-                        <input type="radio" name="extra[]" value="renombrarErrorLog" id="renombrarErrorLog" checked="checked">
+                        <input type="radio" name="extra[]" value="renombrarErrorLog" id="renombrarErrorLog">
                         <label for="renombrarErrorLog">Renombrar error_log al desactivar plugins</label>
+                    </p>
+                    <p>
+                        <input type="radio" name="extra[]" value="renombrarErrorLog" id="renombrarErrorLog" checked="checked">
+                        <label for="noCambiarErrorLog">No hacer nada con el error_log</label>
                     </p>
                 </div>
               

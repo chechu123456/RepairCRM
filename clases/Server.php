@@ -158,7 +158,7 @@
 
         function __toString()
         {
-            return "Versión: $this->versionPhp ";
+            return "Versión: $this->versionPhp / Extensiones". print_r($this->extensiones);
         }
     }
 

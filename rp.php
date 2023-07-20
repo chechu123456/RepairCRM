@@ -111,12 +111,21 @@
     
         //$fichero = new CapturaPantalla($url);
 
+
         $fichero = new Fichero("../wp-content/plugins/", $url);
         //$pluginsWp --> onALLpluigns, offALLplugins, offErrorPlugins
-        $fichero->obtenerCarpetasDirectorio($pluginsWp, $wp->getPluginsThemeFailed());
+        
+        if(array_search("cache", $extra)){
+            $fichero->obtenerCarpetasDirectorio($pluginsWp, $wp->getPluginsThemeFailed(), $cache = true);
+        }else{
+            $fichero->obtenerCarpetasDirectorio($pluginsWp, $wp->getPluginsThemeFailed(), $cache = false);
+        }
 
-        aplicarExtras($wp,$extra);
-        $fichero->ficheros_vacios();
+        //MostrarErroLog
+  //      aplicarExtrasWP($wp,$extra);
+        //Otros extras
+        aplicarExtrasFichero($fichero,$extra);
+
 
         /*
         var_dump($wp->getErrorLog());
@@ -135,11 +144,53 @@
     
     }
 
-    function aplicarExtras($crm, $extra){
-        if(array_search("mostrarErrorLog", $extra)){
-            echo var_export($crm->errorLogRaiz,true);
+    function aplicarExtrasWP($obj, $extra){
+
+
+        if(array_search("theme", $extra)){
+
         }
+
+         
+        if(array_search("mostrarErrorLog", $extra)){
+            echo var_export($obj->errorLogRaiz,true);
+        }
+                 
+        if(array_search("eliminarErrorLog", $extra)){
+        }
+
+        if(array_search("renombrarErrorLog", $extra)){
+        }
+
+
     }
+
+    
+    function aplicarExtrasFichero($obj, $extra){
+
+        if(array_search("emptyFiles", $extra) !== false && $extra[0] == "emptyFiles" ){
+            echo "<p>Ficheros vacíos:</p>";
+            var_dump($obj->ficheros_vacios());
+        }
+       
+
+        if(array_search("theme", $extra)){
+
+        }
+
+        if(array_search("cache", $extra)){
+
+        }
+                 
+        if(array_search("eliminarErrorLog", $extra)){
+        }
+
+        if(array_search("renombrarErrorLog", $extra)){
+        }
+
+
+    }
+
 
    
 

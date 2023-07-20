@@ -22,32 +22,38 @@
 
      
 
-        function obtenerCarpetasDirectorio($accion, $pluginFail){
-            $this->borrarCache();
-            $directorio = opendir($this->directorio);
-            // Recorre todos los elementos del directorio
-            while (($archivo = readdir($directorio)) !== false)  {
-                // Se muestran todos los archivos y carpetas excepto "." y ".."
-                if ($archivo != "." && $archivo != "..") {
-                    // Si es un directorio se recorre recursivamente
-                    if (is_dir($this->directorio. $archivo)) {
-                        $this->listarContenido($archivo);
-                        if($accion == "onALLplugins"){
-                            $this->comprobarPluginDesactivado($this->directorio.$archivo);
-                            echo $this->crearPag($archivo);
-                        }elseif($accion == "offALLplugins"){                    
-                            $this->comprobarPluginActivado($this->directorio.$archivo); 
-                        }elseif($accion == "offErrorPlugins"){
-                            var_dump($pluginFail);
-                            if(in_array($archivo,$pluginFail)){
-                                $this->comprobarPluginActivadoPluginFail($this->directorio.$archivo, $pluginFail); 
+        function obtenerCarpetasDirectorio($accion, $pluginFail, $cache){
+            echo "<h1>$cache</h1>";
+            if($accion != "nothing"){
+                $directorio = opendir($this->directorio);
+                // Recorre todos los elementos del directorio
+                while (($archivo = readdir($directorio)) !== false)  {
+                    // Se muestran todos los archivos y carpetas excepto "." y ".."
+                    if ($archivo != "." && $archivo != "..") {
+                        // Si es un directorio se recorre recursivamente
+                        if (is_dir($this->directorio. $archivo)) {
+                            $this->listarContenido($archivo);
+                            if($accion == "onALLplugins"){
+                                echo ($cache) ? $this->borrarCache(): "<p>Cache NO borrada</p>";
+                                $this->comprobarPluginDesactivado($this->directorio.$archivo);
+                                echo $this->crearPag($archivo);
+                            }elseif($accion == "offALLplugins"){                    
+                                $this->comprobarPluginActivado($this->directorio.$archivo); 
+                            }elseif($accion == "offErrorPlugins"){
+                                var_dump($pluginFail);
+                                if(in_array($archivo,$pluginFail)){
+                                    $this->comprobarPluginActivadoPluginFail($this->directorio.$archivo, $pluginFail); 
+                                }
+                            }else{                            
+                                echo "Error solicitud al renombrar los ficheros";
                             }
-                        }else{                            
-                            echo "Error solicitud al renombrar los ficheros";
-                        }
-                    } 
+                        } 
+                    }
                 }
+            }else{
+                echo "<h1>No se han realizado cambios en los ficheros</h1>";
             }
+
 
         }
 
