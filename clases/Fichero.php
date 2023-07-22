@@ -171,6 +171,8 @@
             }
         }
 
+
+
         //Obtener nombre de los ficheros vacios o que tienen 0 bytes
         function ficheros_vacios() {
             $extension = 'php';
@@ -196,10 +198,12 @@
             $palabraBuscar = "AddHandler";
 
             foreach ($archivos as $archivo) {
-                $datos = $this->encontrarDatosArchivo($archivo);
-                $encontrado = $this->encontrarPalabraLinea($datos, $palabraBuscar);
-                if($encontrado){
-                    echo "<p>Encontrado handler en $archivo</p>";
+                if(file_exists($archivo)){
+                    $datos = $this->encontrarDatosArchivo($archivo);
+                    $encontrado = $this->encontrarPalabraLinea($datos, $palabraBuscar);
+                    if($encontrado){
+                        echo "<p>Encontrado handler en $archivo</p>";
+                    }
                 }
             }
 

@@ -38,6 +38,9 @@ class Crm{
         $this->extra = $extra;
     }
 
+    public function getPathErrorLog(){
+        return $this->pathErrorLog;
+    }
 
 
     //Obtener Versión
@@ -175,6 +178,28 @@ class Crm{
         }else{
             return array_unique($this->$valor);
         }
+    }
+
+    function rmErrorLog(){
+        if(file_exists($this->getPathErrorLog()[0])){
+            unlink($this->getPathErrorLog()[0]);
+        }
+
+        if(file_exists($this->getPathErrorLog()[1])){
+            unlink($this->getPathErrorLog()[1]);
+        }
+        
+    }
+
+    function renameErrorLog(){
+        if(file_exists($this->getPathErrorLog()[0])){
+            rename($this->getPathErrorLog()[0], $this->getPathErrorLog()[0]."_automatic_old");
+        }
+
+        if(file_exists($this->getPathErrorLog()[1])){
+            rename($this->getPathErrorLog()[1], $this->getPathErrorLog()[1]."_automatic_old");
+        }
+        
     }
 
 }

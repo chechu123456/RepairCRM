@@ -95,11 +95,11 @@
         //print_r($server->getConsumoCPU());
         //echo "<br>";
         //print_r($server->getConsumoRAM());
-        echo  $server->__toString() ."<br>";
+        echo  $server->__toString() ."<br> Memory_limit establecido: ";
         print_r($server->getMemoryLimit());
         echo "<br>";
-        print_r($server->getConsumoCPU($usuario));
-        echo "<br>";
+        //print_r($server->getConsumoCPU($usuario));
+        echo "<br> Extensiones faltantes recomendables: ";
         print_r($server->getExtensionesRecomendables($extensionesRm));
     }
   
@@ -123,7 +123,7 @@
         }
 
         //MostrarErroLog
-  //      aplicarExtrasWP($wp,$extra);
+        aplicarExtrasWP($wp,$extra);
         //Otros extras
         aplicarExtrasFichero($fichero,$extra);
 
@@ -158,9 +158,11 @@
         }
                  
         if(array_search("eliminarErrorLog", $extra)){
+            $obj->rmErrorLog();
         }
 
         if(array_search("renombrarErrorLog", $extra)){
+            $obj->renameErrorLog();
         }
 
 
@@ -174,22 +176,7 @@
             var_dump($obj->ficheros_vacios());
         }
        
-
-        if(array_search("theme", $extra)){
-
-        }
-
-        if(array_search("cache", $extra)){
-
-        }
-                 
-        if(array_search("eliminarErrorLog", $extra)){
-        }
-
-        if(array_search("renombrarErrorLog", $extra)){
-        }
-
-
+    
     }
 
 

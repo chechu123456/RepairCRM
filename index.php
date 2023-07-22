@@ -45,9 +45,9 @@
                 <div class="wordpress ocultar">
                     <h1>WordPress</h1>
                     <p><input type="radio" name="pluginsWp" id="pluginsWp" value="onALLplugins"> <label for="pluginsWp">Activar todos módulos o plugins</label></p>
-                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offALLplugins"  checked="checked"> <label for="pluginsWp" >Desactivar todos plugins </label></p>
-                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offErrorPlugins"> <label for="pluginsWp">Desactivar SOLO los plugins que aparecen en el errorlog </label></p>
-                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="nothing"> <label for="pluginsWp">No hacer cambios</label></p>
+                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offALLplugins" > <label for="pluginsWp" >Desactivar todos plugins </label></p>
+                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offErrorPlugins" > <label for="pluginsWp">Desactivar SOLO los plugins que aparecen en el errorlog </label></p>
+                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="nothing" checked="checked"> <label for="pluginsWp">No hacer cambios</label></p>
                 </div>
                 <hr>
                 <div class="extra">
@@ -67,14 +67,14 @@
                     </p>
                     <p>
                         <input type="radio" name="extra[]" value="eliminarErrorLog"  id="eliminarErrorLog" >
-                        <label for="eliminarErrorLog">Eliminar error_log al desactivar plugins</label>
+                        <label for="eliminarErrorLog">Eliminar error_log al finalizar el proceso</label>
                     </p>
                     <p>
                         <input type="radio" name="extra[]" value="renombrarErrorLog" id="renombrarErrorLog">
-                        <label for="renombrarErrorLog">Renombrar error_log al desactivar plugins</label>
+                        <label for="renombrarErrorLog">Renombrar error_log al finalizar el proceso</label>
                     </p>
                     <p>
-                        <input type="radio" name="extra[]" value="renombrarErrorLog" id="renombrarErrorLog" checked="checked">
+                        <input type="radio" name="extra[]" value="nothingErrorLog" id="nothingErrorLog" checked="checked">
                         <label for="noCambiarErrorLog">No hacer nada con el error_log</label>
                     </p>
                 </div>
@@ -84,6 +84,8 @@
                 </div>
 
             </form>
+            <br>
+            <button>Cambiar tema</button>
         </div>
     </div>
      
