@@ -40,9 +40,8 @@
                             }elseif($accion == "offALLplugins"){                    
                                 $this->comprobarPluginActivado($this->directorio.$archivo); 
                             }elseif($accion == "offErrorPlugins"){
-                                var_dump($pluginFail);
                                 if(in_array($archivo,$pluginFail)){
-                                    $this->comprobarPluginActivadoPluginFail($this->directorio.$archivo, $pluginFail); 
+                                    $this->comprobarPluginActivado($this->directorio.$archivo); 
                                 }
                             }else{                            
                                 echo "Error solicitud al renombrar los ficheros";
@@ -91,19 +90,7 @@
                 return false;
             }
             
-        }
-
-        function comprobarPluginActivadoPluginFail($plugin, $pluginFail){
-            echo "<h1>".var_dump($pluginFail). "</h1>";
-            if( !preg_match("/\w*_automatic_old$/",$plugin) ){
-                $this->desactivarPlugins($plugin);
-                return true;
-            }else{
-                return false;
-            }
-            
-        }
-        
+        }       
 
         function crearPag($plugin){
             $ruta = "estados/".$plugin.".html";
@@ -200,10 +187,58 @@
 
             return $this->ficherosVacios;
         }
+
+        public function handlerPHP($directorio, $directorioRaiz){
+
+
+            //Nombre del archivo
+            $archivos = [$directorio."/.htaccess", $directorioRaiz.".htaccess"];
+            $palabraBuscar = "AddHandler";
+
+            foreach ($archivos as $archivo) {
+                $datos = $this->encontrarDatosArchivo($archivo);
+                $encontrado = $this->encontrarPalabraLinea($datos, $palabraBuscar);
+                if($encontrado){
+                    echo "<p>Encontrado handler en $archivo</p>";
+                }
+            }
+
+
+        }
+
+        public function encontrarDatosArchivo($archivo){
+            
+            //Se abre el archivo
+            $file = fopen($archivo, "r") or exit("No se pudo abrir el archivo!"); 
+            //Auxiliar para las lineas del archivo
+            //Palabra a buscar
+         
+            $datos =[];
+            //Se lee el archivo
+            while(!feof($file))
+            { 
+                /*Comparación del archivo y la palabra a buscar si es verdad 
+                se almacena en la variable $linea*/
+                array_push( $datos, fgets($file));
+
+            }
+
+            //Se cierra el archivo
+            fclose($file);
+
+            return $datos;            
+        }
+
+        public function encontrarPalabraLinea($datos, $palabraBuscar){
+            $encontrado = false;
+            array_walk_recursive($datos, function ($value, $key) use ($palabraBuscar, &$encontrado) {
+                if (strpos($value, $palabraBuscar) !== false) {
+                    $encontrado = true;
+                }
+            });
+
+            return $encontrado;
+        }
         
-
-
-
-
     }
 ?>

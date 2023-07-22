@@ -91,7 +91,7 @@ class Crm{
                         array_push($this->errorLogRaiz,"<p>No se encontraron errores en el errorLog --> ". $this->pathErrorLog[1] ." - Buscando errores recientes en". $this->pathErrorLog[0] ." </p>");
                         exec("tail -25 ".$this->pathErrorLog[1]."", $lastErrors);
 
-                        //Si no hay errores en ningún fichero, indicarlo
+                        //Si no hay errores en ningún fichero, indicarlo y
                         if(empty($lastErrors)){
                             array_push($this->errorLogRaiz,"<p>No se encontraron errores en ningún errorLog </p>");
                         }else{
