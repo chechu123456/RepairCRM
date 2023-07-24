@@ -113,7 +113,7 @@
 
 
         $fichero = new Fichero("../wp-content/plugins/", $url);
-        $fichero->handlerPHP(getRutaInstalacion(), "/home/".getUser(). "/");
+        print_r($fichero->handlerPHP(getRutaInstalacion(), "/home/".getUser(). "/"));
         //$pluginsWp --> onALLpluigns, offALLplugins, offErrorPlugins
         
         if(array_search("cache", $extra)){

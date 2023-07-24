@@ -197,14 +197,32 @@
             $archivos = [$directorio."/.htaccess", $directorioRaiz.".htaccess"];
             $palabraBuscar = "AddHandler";
 
-            foreach ($archivos as $archivo) {
-                if(file_exists($archivo)){
-                    $datos = $this->encontrarDatosArchivo($archivo);
+            $arrayDirectorio = explode("/", $directorio);
+            $arrayRutasHandler = [];            
+            
+            
+            //Buscar ./htaccess desde el directorio actual hasta los que hay en subdirectorios padres
+            for($i = count($arrayDirectorio); $i >= 3 ; $i--){
+                $directorioFinal = implode("/", $arrayDirectorio);
+                $ruta = $directorioFinal."/.htaccess";
+                if(file_exists($directorioFinal."/.htaccess")){
+                    
+                    $datos = $this->encontrarDatosArchivo($ruta);
                     $encontrado = $this->encontrarPalabraLinea($datos, $palabraBuscar);
                     if($encontrado){
-                        echo "<p>Encontrado handler en $archivo</p>";
+                        array_push($arrayRutasHandler, $ruta);
                     }
+
                 }
+                
+                array_pop($arrayDirectorio);
+            }
+
+            if(count($arrayRutasHandler) == 0 ){
+                array_push($arrayRutasHandler,"<p>No hay handlers en los .htaccess del directorio ni en los directorios padres</p>");
+                return $arrayRutasHandler;
+            }else{
+                return $arrayRutasHandler;
             }
 
 
