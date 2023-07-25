@@ -202,6 +202,15 @@ class Crm{
         
     }
 
+    //Cambiar Tema 
+    public function changeTheme(){
+        /*
+            UPDATE wp_options SET option_value = '<your-new-theme>' WHERE option_name = 'template';
+            UPDATE wp_options SET option_value = '<your-new-theme>' WHERE option_name = 'stylesheet';
+            UPDATE wp_options SET option_value = '<your-new-theme>' WHERE option_name = 'current_theme';
+        */
+    }
+
 }
 
 

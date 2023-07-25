@@ -23,7 +23,8 @@
      
 
         function obtenerCarpetasDirectorio($accion, $pluginFail, $cache){
-            echo "<h1>$cache</h1>";
+            //Comprobar si existe el directorio "Estados" y borrar todo el contenido
+            $this->carpetaEstados();
             if($accion != "nothing"){
                 $directorio = opendir($this->directorio);
                 // Recorre todos los elementos del directorio
@@ -95,7 +96,17 @@
         function crearPag($plugin){
             $ruta = "estados/".$plugin.".html";
             echo $plugin ."<br>" . $ruta;
-            $this->crearFichero($ruta, file_get_contents($this->url), "w");
+
+            //File_get_contents vs curl
+            $ch = curl_init();
+            curl_setopt ($ch, CURLOPT_URL,$this->url);
+            curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 3600);
+            $html = curl_exec($ch);
+            curl_close($ch);
+
+            $this->crearFichero($ruta,  $html, "w");
+            //$this->crearFichero($ruta, file_get_contents($this->url), "w");
 
     /* OTRA ALTERNATIVA A PROBAR
             $ch = curl_init();
@@ -110,6 +121,31 @@
 
             return  "<embed src='$ruta' width='100%' height='800px' onerror=\"alert('URL invalid !!');\" />";
             //return "<iframe width='300' height='200'src='$ruta'></iframe>";
+        }
+
+        function carpetaEstados(){
+             //Comprobar si existe la carpeta Estados
+            if(!is_dir("estados")){
+                mkdir("estados", 0755);
+            }else{
+                //Ver si existen ficheros dentro de la carpeta Estados
+                $arrFiles = array();
+                $handle = opendir('estados');
+                if ($handle) {
+                    while (($entry = readdir($handle)) !== FALSE) {
+                        $arrFiles[] = $entry;
+                    }
+                }
+                closedir($handle);
+                //Si hay contenido dentro de la carpeta, borrarlo
+                if(!empty($arrFiles)){
+                    $files = glob('estados/*'); //obtenemos todos los nombres de los ficheros
+                    foreach($files as $file){
+                        if(is_file($file))
+                        unlink($file); //elimino el fichero
+                    }
+                }
+            }
         }
 
         function borrarCache(){
@@ -174,10 +210,10 @@
 
 
         //Obtener nombre de los ficheros vacios o que tienen 0 bytes
-        function ficheros_vacios() {
+        function ficheros_vacios($rutaInstalacion) {
             $extension = 'php';
 
-            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->directorio));
+            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($rutaInstalacion));
             foreach ($iterator as $archivo) {
                 if ($archivo->isFile()) {
                     $nombreArchivo = $archivo->getFilename();

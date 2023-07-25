@@ -126,22 +126,6 @@
         aplicarExtrasWP($wp,$extra);
         //Otros extras
         aplicarExtrasFichero($fichero,$extra);
-
-
-        /*
-        var_dump($wp->getErrorLog());
-        var_dump($wp->getErrorsFatal());
-        */
-        /*
-        var_dump($wp->getPluginsThemeFailed());
-        echo "<br>-------";
-        var_dump($wp->getFails("themeFail"));
-    $url="https";
-        $fichero = new Fichero("../wp-content/plugins/", $url);
-    
-    
-        print_r($fichero->ficheros_vacios("../"));
-    */
     
     }
 
@@ -154,6 +138,7 @@
 
          
         if(array_search("mostrarErrorLog", $extra)){
+            echo "<p>Error Log:</p>";
             echo var_export($obj->errorLogRaiz,true);
         }
                  
@@ -165,7 +150,6 @@
             $obj->renameErrorLog();
         }
 
-
     }
 
     
@@ -173,48 +157,10 @@
 
         if(array_search("emptyFiles", $extra) !== false && $extra[0] == "emptyFiles" ){
             echo "<p>Ficheros vacíos:</p>";
-            var_dump($obj->ficheros_vacios());
+            var_dump($obj->ficheros_vacios(getRutaInstalacion()));
         }
        
-    
     }
-
-
-   
-
-
-/*
-    echo "<p>Versión de PHP: " .  phpversion() . "</p>";
-    echo "<p>Dominio: " .  $_SERVER['SERVER_NAME'] ."</p>";
-
-    echo "<p>Ruta: " .  $_SERVER['SERVER_NAME'] .  $_SERVER['REQUEST_URI'] ."</p>";
-    echo "<p>Revisar error contenido mixto</p>";
-
-    $accion = "activar";
-    $url = "http://vaguineitor.thechechubark.online/";
-
-    //$fichero = new CapturaPantalla($url);
-
-    $fichero = new Fichero("../wp-content/plugins/", $url);
-    $fichero->obtenerCarpetasDirectorio($accion);
-*/
-
-    /***********************************/
-    
-    
-    /*
-    $html2Jpeg = new HtmlToJpeg();
-    $html2Jpeg->renderHtml();//You can write html
-    $html2Jpeg->renderView("pruebas.html");
-
-    //$html2Jpeg->renderView("test.html");//you can add html or php files as a page
-    echo $html2Jpeg->output();
-    $html2Jpeg->download();//starting download
-    */
-
-
-    /**********************************/
-
 
 ?>
 <!--
