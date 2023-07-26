@@ -51,7 +51,7 @@
                     }
                 }
             }else{
-                echo "<h1>No se han realizado cambios en los ficheros</h1>";
+                echo "<p>No se han realizado cambios en los ficheros</p>";
             }
 
 
@@ -166,7 +166,6 @@
                                     if($file == "lscache"){
                                         if ($handle3 = opendir("/home/$usuario/lscache/")) {                
                                             $file = readdir($handle3);
-                                            echo "<h1>/home/$usuario/lscache</h1>";
                                             $this->rrmdir("/home/$usuario/lscache");
                                             /*
                                             while (false !== ($file = readdir($handle3))) {

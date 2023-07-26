@@ -2,11 +2,8 @@
     require("clases/Server.php");
     require("clases/WordPress.php");
     require("clases/Fichero.php");
-
     require("clases/CapturaPantalla.php");
-    require("pdfcrowd/pdfcrowd.php");
-    require("htmltojpeg/HtmlToJpeg.php");
-
+   
 
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
@@ -36,7 +33,7 @@
 
         $valoresExtra = array();
 
-        funcionesServer(getUser());
+        $extensiones = funcionesServer(getUser());
 
         if(isset($_POST['pluginsWp']) ){
             $pluginsWp = $_POST['pluginsWp'];
@@ -58,7 +55,7 @@
 
         }else if($crmOpcion === "wordpress" && isset($_POST['pluginsWp']) ){
 
-            funcionesWordPress(getRutaInstalacion(), $pluginsWp, $valoresExtra, $url);
+            funcionesWordPress(getRutaInstalacion(), $pluginsWp, $valoresExtra, $url, $extensiones);
 
         }else{
             echo "<p>No se ha seleccionado una opción dentro del CRM escogido</p>";
@@ -101,18 +98,20 @@
         //print_r($server->getConsumoCPU($usuario));
         echo "<br> Extensiones faltantes recomendables: ";
         print_r($server->getExtensionesRecomendables($extensionesRm));
+
+        return $server->extensiones;
     }
   
-    function funcionesWordPress($rutaInstalación, $pluginsWp, $extra, $url){
-        $wp = new WordPress($rutaInstalación, $pluginsWp, $extra);
-        echo "<br>". $wp->version . "<br>";
-
+    function funcionesWordPress($rutaInstalación, $pluginsWp, $extra, $url, $extensiones){
+        $wp = new WordPress($rutaInstalación, $pluginsWp, $extra, $extensiones);
+        echo "<br> Versión de WordPress:". $wp->version . "<br>";
         //var_dump($wp->getPluginsThemeFailed());
     
         //$fichero = new CapturaPantalla($url);
 
 
         $fichero = new Fichero("../wp-content/plugins/", $url);
+        echo "<p>Handlers PHP detectados:</p>";
         print_r($fichero->handlerPHP(getRutaInstalacion(), "/home/".getUser(). "/"));
         //$pluginsWp --> onALLpluigns, offALLplugins, offErrorPlugins
         
@@ -133,7 +132,8 @@
 
 
         if(array_search("theme", $extra)){
-
+            echo "<p>Tema WP instalado actualmente:</p>";
+            //echo var_export($obj->datosConexBD);
         }
 
          
