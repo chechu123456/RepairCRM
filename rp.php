@@ -75,7 +75,10 @@
     }
 
     function getRutaInstalacion(){
-        return "/home/".getUser(). "/".getRuta()[3];
+        $ruta = getRuta();
+        array_pop($ruta);
+        $ruta = implode("/",$ruta);
+        return $ruta;
     }
 
     function funcionesServer($usuario){
