@@ -225,11 +225,10 @@
             return $this->ficherosVacios;
         }
 
-        public function handlerPHP($directorio, $directorioRaiz){
+        public function handlerPHP($directorio){
 
 
             //Nombre del archivo
-            $archivos = [$directorio."/.htaccess", $directorioRaiz.".htaccess"];
             $palabraBuscar = "AddHandler";
 
             $arrayDirectorio = explode("/", $directorio);

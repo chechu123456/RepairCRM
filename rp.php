@@ -115,7 +115,7 @@
 
         $fichero = new Fichero("../wp-content/plugins/", $url);
         echo "<p>Handlers PHP detectados:</p>";
-        print_r($fichero->handlerPHP(getRutaInstalacion(), "/home/".getUser(). "/"));
+        print_r($fichero->handlerPHP(getRutaInstalacion()));
         //$pluginsWp --> onALLpluigns, offALLplugins, offErrorPlugins
         
         if(array_search("cache", $extra)){
