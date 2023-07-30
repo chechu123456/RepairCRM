@@ -1,8 +1,9 @@
 <?php
+
+
 class Crm{
     public $crm = "";
     public $pathV = "";
-    public $pathConexBD = "";
     public $pathErrorLog = [];
     public $pathTheme;
     public $version = "";
@@ -17,15 +18,11 @@ class Crm{
     public $pluginsWp = "";
     public $extra = [];
 
-    public $bdName;
-    public $bdUser;
-    public $bdPassword;
-    public $bdHost;
-    public $bdPrefix;
+    private $conex;
+
 
 
     public function __construct() {
-        
     }
 
     public function setCRM($crm){
@@ -34,10 +31,6 @@ class Crm{
 
     public function setPath($pathV){
         $this->pathV = $pathV;
-    }
-
-    public function setPathConexBD($pathConexBD){
-        $this->pathConexBD = $pathConexBD;
     }
 
     public function setErrorLog($pathErrorLog){
@@ -58,6 +51,10 @@ class Crm{
 
     public function setPathTheme($pathTheme){
         $this->pathTheme = $pathTheme;
+    }
+
+    public function setConex($conex){
+        $this->conex = $conex;
     }
 
 
@@ -220,125 +217,39 @@ class Crm{
         
     }
 
-    //
-    public function getDatosConexBD(){
-        if($this->crm == "wp"){
-            $palabraBuscada = ["define( 'DB_NAME',", "define( 'DB_USER',", "define( 'DB_PASSWORD',", "define( 'DB_HOST'", '$table_prefix = ' ];
-        
-            // Abre el archivo en modo lectura
-            $archivoPuntero = fopen($this->pathConexBD, 'r');
-            if ($archivoPuntero) {
-                // Recorre el archivo línea por línea
-                while (($linea = fgets($archivoPuntero)) !== false) {
-                    // Verifica si la línea contiene la palabra buscada
-                    foreach($palabraBuscada as $valor){
-                        if (strpos($linea, $valor) !== false) {
-                            // Imprime la línea completa
-                            //Obtener versión y Quitar comillas, punto y coma, sustituirlo por espacio en blanco
-
-                            if(strpos($linea, "=")){
-                                array_push($this->datosConexBD, trim(str_replace(array('"', ";", "'"), "", explode("=",$linea)[1])));
-                            }else if(strpos($linea, ",")){
-                                array_push($this->datosConexBD, trim(str_replace(array('"', ")", "'", ";"), "", explode(",",$linea)[1])));
-                            }
-                        }
-                    }
-                }
-                // Cierra el archivo
-                fclose($archivoPuntero);
-            } else {
-                echo "<p>No se pudo abrir el archivo ".$this->pathConexBD." para obtener los datos de conexión a la base de datos</p>.";
-            }
-        }else if($this->crm == "pr"){
-
-        }
-
-        return $this->datosConexBD; 
-    }
-
-    //
-    function conexBD($extensiones){
-
-        $this->getDatosConexBD();
-
-        if(array_search("nd_mysqli",$extensiones) || array_search("mysqli",$extensiones)){
-            if(!empty($this->datosConexBD)){
-                echo "<p>Datos conex a BD:</p>";
-                echo $this->bdName = $this->datosConexBD[0];
-                echo "<br>";
-                echo $this->bdUser = $this->datosConexBD[1];
-                echo "<br>";
-                echo $this->bdPassword = $this->datosConexBD[2];
-                echo "<br>";
-                echo $this->bdHost =  $this->datosConexBD[3];
-                echo "<br>";
-                echo $this->bdPrefix = $this->datosConexBD[4];
-                echo "<br>";
-
-                $conex = mysqli_connect($this->bdHost, $this->bdUser,  $this->bdPassword, $this->bdName);
-                //$enlace = mysqli_connect($this->datosConexBD[3], $this->datosConexBD[1], $this->datosConexBD[2], $this->datosConexBD[0]);
-
-                if (!$conex) {
-                    echo "Error: No se pudo conectar a MySQL." . PHP_EOL;
-                    echo "errno de depuración: " . mysqli_connect_errno() . PHP_EOL;
-                    echo "error de depuración: " . mysqli_connect_error() . PHP_EOL;                    
-                }else{
-                    echo "<p>Éxito: Se ha conectado a la base de datos</p>";
-                    $sql = "SELECT option_name, option_value  FROM ".$this->bdPrefix."options WHERE `option_name` LIKE 'template' OR `option_name` LIKE 'stylesheet' OR `option_name` LIKE 'current_theme'";
-
-                    $result = $conex->query($sql);
-                    
-                    if ($result->num_rows > 0) {
-                        // Mostrar resultados
-                        $cont=0;
-                        while($row = $result->fetch_assoc()) {
-                            if($row['option_name'] == "stylesheet"|| $row['option_name'] == "template"){
-                                $this->valorTheme= $row['option_value'];
-                                $cont++;
-                            }
-                            
-                        }
-                        if($cont == 2){
-                            echo "<p>Tema actual: $this->valorTheme</p>";
-                            $this->checkTheme();
-                        }   
-                    } else {
-                        echo "0 resultados";
-                    }
-                }
-                
-                
-                
-                
-                mysqli_close($conex);
-            }
-        }
-
-        if(array_search("mysql", $extensiones) || array_search("mysqlnd",$extensiones)){
-
-        }
-
-    }
-
+  
     //Verificar Tema 
-    public function checkTheme(){
-        $directorio = $this->pathTheme. $this->valorTheme;
-        if (is_dir($directorio)){
-            $archivos = scandir($directorio);
-            if( count($archivos) > 2) {
-                echo "<p>El $directorio EXISTE y contiene archivos</p>";
-            } else {
-                echo "El directorio está vacío";
+    public function checkTheme($bdPrefix){
+        $sql = "SELECT option_name, option_value  FROM ".$bdPrefix."options WHERE `option_name` LIKE 'template' OR `option_name` LIKE 'stylesheet' OR `option_name` LIKE 'current_theme'";
+        $result = $this->conex->query($sql);
+        if ($result->num_rows > 0) {
+            // Mostrar resultados
+            $cont=0;
+            while($row = $result->fetch_assoc()) {
+                if($row['option_name'] == "stylesheet"|| $row['option_name'] == "template"){
+                    $this->valorTheme= $row['option_value'];
+                    $cont++;
+                }
+                
             }
-        }else{
-            echo "<p>El $directorio NO existe</p>";
+            if($cont == 2){
+                echo "<p>Tema actual: $this->valorTheme</p>";
+                $directorio = $this->pathTheme. $this->valorTheme;
+                if (is_dir($directorio)){
+                    $archivos = scandir($directorio);
+                    if( count($archivos) > 2) {
+                        echo "<p>El $directorio EXISTE y contiene archivos</p>";
+                    } else {
+                        echo "El directorio está vacío";
+                    }
+                }else{
+                    echo "<p>El $directorio NO existe</p>";
+                }
+            }   
+        } else {
+            echo "0 resultados";
         }
-        
-        /*
-            UPDATE wp_options SET option_value = '<your-new-theme>' WHERE option_name = 'template';
-            UPDATE wp_options SET option_value = '<your-new-theme>' WHERE option_name = 'stylesheet';
-            UPDATE wp_options SET option_value = '<your-new-theme>' WHERE option_name = 'current_theme';
-        */
+
     }
 
 

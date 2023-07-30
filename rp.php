@@ -3,7 +3,8 @@
     require("clases/WordPress.php");
     require("clases/Fichero.php");
     require("clases/CapturaPantalla.php");
-   
+    require_once("clases/ConexionBd.php");
+
 
     header('Access-Control-Allow-Origin: *');
     header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
@@ -51,11 +52,13 @@
         }
 
 
+
         if( $crmOpcion === "prestashop" && isset($_POST['modulosPr'])){
 
         }else if($crmOpcion === "wordpress" && isset($_POST['pluginsWp']) ){
 
             funcionesWordPress(getRutaInstalacion(), $pluginsWp, $valoresExtra, $url, $extensiones);
+            
 
         }else{
             echo "<p>No se ha seleccionado una opción dentro del CRM escogido</p>";
@@ -106,7 +109,22 @@
     }
   
     function funcionesWordPress($rutaInstalación, $pluginsWp, $extra, $url, $extensiones){
+        //Inicializar objeto WordPress (Realiza operaciones en el padre - Clase CRM)
         $wp = new WordPress($rutaInstalación, $pluginsWp, $extra, $extensiones);
+
+        //Crear la instancia para realizar la conexion a la bd
+        $pathConexBD ="$rutaInstalación/wp-config.php";
+        $conexionBd = new ConexionBd( $extensiones, $pathConexBD, "wp");
+
+        //Obtener prefijo bd
+        $bdPrefix = $conexionBd->getPrefixBD();
+        
+        //Pasar la instancia para poder hacer consultas a la bd
+        $wp->setConex($conexionBd);
+
+        
+        $wp->checkTheme($bdPrefix);
+        echo "<br>---------------------";
         echo "<br> Versión de WordPress:". $wp->version . "<br>";
         //var_dump($wp->getPluginsThemeFailed());
     
