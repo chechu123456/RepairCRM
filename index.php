@@ -36,7 +36,7 @@
                     <label for="modulosPr">Desactivar módulos base de Prestashop</label>
                     <input type="radio" name="modulosPr" id="modulosPr" value="offAny">
                     <label for="">Desactivar TODOS los módulos MENOS los base de Prestashop</label>
-                    <input type="radio" name="modulosPr" id="modulosPr" value="offErrors">
+                    <input type="radio" name="modulosPr" id="modulosPr" value="offError">
                     <label for="modulosPr">Desactivar SOLO los módulos que aparecen en el errorlog </label>
                     <input type="radio" name="modulosPr" id="modulosPr" value="nothing">
                     <label for="modulosPr">No hacer cambios</label>
@@ -44,9 +44,9 @@
                 <hr>
                 <div class="wordpress ocultar">
                     <h1>WordPress</h1>
-                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="onALLplugins"> <label for="pluginsWp">Activar todos módulos o plugins</label></p>
-                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offALLplugins" > <label for="pluginsWp" >Desactivar todos plugins </label></p>
-                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offErrorPlugins" > <label for="pluginsWp">Desactivar SOLO los plugins que aparecen en el errorlog </label></p>
+                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="onAll"> <label for="pluginsWp">Activar todos módulos o plugins</label></p>
+                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offAll" > <label for="pluginsWp" >Desactivar todos plugins </label></p>
+                    <p><input type="radio" name="pluginsWp" id="pluginsWp" value="offError" > <label for="pluginsWp">Desactivar SOLO los plugins que aparecen en el errorlog </label></p>
                     <p><input type="radio" name="pluginsWp" id="pluginsWp" value="nothing" checked="checked"> <label for="pluginsWp">No hacer cambios</label></p>
                 </div>
                 <hr>

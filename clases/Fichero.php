@@ -34,13 +34,13 @@
                         // Si es un directorio se recorre recursivamente
                         if (is_dir($this->directorio. $archivo)) {
                             $this->listarContenido($archivo);
-                            if($accion == "onALLplugins"){
+                            if($accion == "onAll"){
                                 echo ($cache) ? $this->borrarCache(): "<p>Cache NO borrada</p>";
                                 $this->comprobarPluginDesactivado($this->directorio.$archivo);
                                 echo $this->crearPag($archivo);
-                            }elseif($accion == "offALLplugins"){                    
+                            }elseif($accion == "offAll"){                    
                                 $this->comprobarPluginActivado($this->directorio.$archivo); 
-                            }elseif($accion == "offErrorPlugins"){
+                            }elseif($accion == "offError"){
                                 if(in_array($archivo,$pluginFail)){
                                     $this->comprobarPluginActivado($this->directorio.$archivo); 
                                 }
