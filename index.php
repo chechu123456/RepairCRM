@@ -37,9 +37,9 @@
                     <input type="radio" name="modulosPr" id="modulosPr" value="offAny">
                     <label for="">Desactivar TODOS los módulos MENOS los base de Prestashop</label>
                     <input type="radio" name="modulosPr" id="modulosPr" value="offErrors">
-                    <label for="">Desactivar SOLO los módulos que aparecen en el errorlog </label>
+                    <label for="modulosPr">Desactivar SOLO los módulos que aparecen en el errorlog </label>
                     <input type="radio" name="modulosPr" id="modulosPr" value="nothing">
-                    <label for="">No hacer cambios</label>
+                    <label for="modulosPr">No hacer cambios</label>
                 </div>
                 <hr>
                 <div class="wordpress ocultar">

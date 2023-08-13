@@ -50,8 +50,47 @@ class ConexionBd {
             } else {
                 echo "<p>No se pudo abrir el archivo ".$this->pathConexBD." para obtener los datos de conexión a la base de datos</p>.";
             }
-        }else if($this->crm == "pr"){
+            $this->host = $this->datosConexBD[3];
+            $this->username = $this->datosConexBD[1];
+            $this->password = $this->datosConexBD[2];
+            $this->database = $this->datosConexBD[0];
+            $this->bdPrefix = $this->datosConexBD[4];
 
+        }else if($this->crm == "pr"){
+            $palabraBuscada = ["'database_name' => '", "'database_user' => '", "'database_password' => '","'database_host' => '", '\'database_prefix\' => \'' ];
+        
+            // Abre el archivo en modo lectura
+            for($i=0; $i < count($this->pathConexBD); $i++){
+                if(file_exists($this->pathConexBD[$i])){
+                    $archivoPuntero = fopen($this->pathConexBD[$i], 'r');
+                    if ($archivoPuntero) {
+                        // Recorre el archivo línea por línea
+                        while (($linea = fgets($archivoPuntero)) !== false) {
+                            // Verifica si la línea contiene la palabra buscada
+                            foreach($palabraBuscada as $valor){
+                                if (strpos($linea, $valor) !== false) {
+                                    // Imprime la línea completa
+                                    //Obtener versión y Quitar comillas, punto y coma, sustituirlo por espacio en blanco
+                                    if(strpos($linea, "=")){
+                                        array_push($this->datosConexBD, trim(str_replace(array('"', ",", "'"), "", explode(">",$linea)[1])));
+                                    }
+                                }
+                            }
+                        }
+                        // Cierra el archivo
+                        fclose($archivoPuntero);
+                    } else {
+                        echo "<p>No se pudo abrir el archivo ".$this->pathConexBD[$i]." para obtener los datos de conexión a la base de datos</p>.";
+                    }
+                }else{
+                    echo "<p>No se encontro el fichero . ".$this->pathConexBD[$i]. "</p>";
+                }
+            }
+            $this->host = $this->datosConexBD[0];
+            $this->username = $this->datosConexBD[1];
+            $this->password = $this->datosConexBD[3];
+            $this->database = $this->datosConexBD[2];
+            $this->bdPrefix = $this->datosConexBD[4];
         }
 
         return $this->datosConexBD; 
@@ -62,22 +101,17 @@ class ConexionBd {
 
         //Para versiones superiores a la 5.6
         if(array_search("nd_mysqli",$extensiones) || array_search("mysqli",$extensiones)){
-            $this->host = $this->datosConexBD[3];
-            $this->username = $this->datosConexBD[1];
-            $this->password = $this->datosConexBD[2];
-            $this->database = $this->datosConexBD[0];
-            $this->bdPrefix = $this->datosConexBD[4];
 
                 echo "<p>Datos conex a BD:</p>";
-                echo $this->username;
+                echo "Usuario:". $this->username;
                 echo "<br>";
-                echo $this->password;
+                echo "Contraseña: ". $this->password;
                 echo "<br>";
-                echo $this->database;
+                echo "BD: ".$this->database;
                 echo "<br>";
-                echo $this->host;
+                echo "Host: ".$this->host;
                 echo "<br>";
-                echo $this->bdPrefix;
+                echo "Prefijo: ".$this->bdPrefix;
                 echo "<br>";
                 $this->conex = mysqli_connect($this->host, $this->username, $this->password, $this->database);
 

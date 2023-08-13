@@ -62,28 +62,30 @@ class Crm{
     public function getVersion(){
         if($this->crm == "wp"){
             $palabraBuscada = '$wp_version = ';
-        
-            // Abre el archivo en modo lectura
-            $archivoPuntero = fopen($this->pathV, 'r');
-
-            if ($archivoPuntero) {
-                // Recorre el archivo línea por línea
-                while (($linea = fgets($archivoPuntero)) !== false) {
-                    // Verifica si la línea contiene la palabra buscada
-                    if (strpos($linea, $palabraBuscada) !== false) {
-                        // Imprime la línea completa
-                        //Obtener versión y Quitar comillas, punto y coma, sustituirlo por espacio en blanco
-                        $this->version=str_replace(array('"', ";", "'"), "", explode("=",$linea)[1]);
-                    }
-                }
-                // Cierra el archivo
-                fclose($archivoPuntero);
-            } else {
-                echo "<p>No se pudo abrir el archivo ".$this->pathV." para obtener la versión de WP</p>.";
-            }
+           
         }else if($this->crm == "pr"){
+            $palabraBuscada = 'const VERSION = ';
 
         }
+
+         // Abre el archivo en modo lectura
+         $archivoPuntero = fopen($this->pathV, 'r');
+
+         if ($archivoPuntero) {
+             // Recorre el archivo línea por línea
+             while (($linea = fgets($archivoPuntero)) !== false) {
+                 // Verifica si la línea contiene la palabra buscada
+                 if (strpos($linea, $palabraBuscada) !== false) {
+                     // Imprime la línea completa
+                     //Obtener versión y Quitar comillas, punto y coma, sustituirlo por espacio en blanco
+                     $this->version=str_replace(array('"', ";", "'"), "", explode("=",$linea)[1]);
+                 }
+             }
+             // Cierra el archivo
+             fclose($archivoPuntero);
+         } else {
+             echo "<p>No se pudo abrir el archivo ".$this->pathV." para obtener la versión de WP</p>.";
+         }
 
         return $this->version; 
         

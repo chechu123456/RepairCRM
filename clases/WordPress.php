@@ -1,6 +1,4 @@
 <?php
-    require "Crm.php";
-
 
     class WordPress extends Crm{
         public $crm = "wp";

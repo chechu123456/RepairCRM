@@ -1,6 +1,8 @@
 <?php
     require("clases/Server.php");
+    require "clases/Crm.php";
     require("clases/WordPress.php");
+    require("clases/PrestaShop.php");
     require("clases/Fichero.php");
     require("clases/CapturaPantalla.php");
     require_once("clases/ConexionBd.php");
@@ -35,10 +37,12 @@
         $valoresExtra = array();
 
         $extensiones = funcionesServer(getUser());
-
+        echo "<br>". print_r($_POST). " <br>";
         if(isset($_POST['pluginsWp']) ){
             $pluginsWp = $_POST['pluginsWp'];
-        }else if(isset($_POST['modulosPr'])){
+        }
+
+        if(isset($_POST['modulosPr'])){
             $modulosPr = $_POST['modulosPr'];
         }
 
@@ -54,6 +58,7 @@
 
 
         if( $crmOpcion === "prestashop" && isset($_POST['modulosPr'])){
+            funcionesPrestaShop(getRutaInstalacion(), $modulosPr, $valoresExtra, $url, $extensiones);
 
         }else if($crmOpcion === "wordpress" && isset($_POST['pluginsWp']) ){
 
@@ -149,11 +154,52 @@
     
     }
 
+    function funcionesPrestaShop($rutaInstalación, $modulosPr, $extra, $url, $extensiones){
+        //Inicializar objeto WordPress (Realiza operaciones en el padre - Clase CRM)
+        $pr = new PrestaShop($rutaInstalación, $modulosPr, $extra, $extensiones);
+
+        //Crear la instancia para realizar la conexion a la bd
+        $pathConexBD =["$rutaInstalación/config/parameters.php", "$rutaInstalación/app/config/parameters.php"];
+        $conexionBd = new ConexionBd( $extensiones, $pathConexBD, "pr");
+
+        //Obtener prefijo bd
+        $bdPrefix = $conexionBd->getPrefixBD();
+        
+        //Pasar la instancia para poder hacer consultas a la bd
+        $pr->setConex($conexionBd);
+
+        
+        //$pr->checkTheme($bdPrefix);
+        echo "<br>---------------------";
+        echo "<br> Versión de PrestaShop:<strong>". $pr->version . "</strong><br>";
+        //var_dump($wp->getPluginsThemeFailed());
+    
+        //$fichero = new CapturaPantalla($url);
+
+
+        $fichero = new Fichero("../modules/", $url);
+        echo "<p>Handlers PHP detectados:</p>";
+        print_r($fichero->handlerPHP(getRutaInstalacion()));
+        //$pluginsWp --> onALLpluigns, offALLplugins, offErrorPlugins
+        
+        if(array_search("cache", $extra)){
+            $fichero->obtenerCarpetasDirectorio($modulosPr, $pr->getPluginsThemeFailed(), $cache = true);
+        }else{
+            $fichero->obtenerCarpetasDirectorio($modulosPr, $pr->getPluginsThemeFailed(), $cache = false);
+        }
+
+        //MostrarErroLog
+        aplicarExtrasWP($pr,$extra);
+        //Otros extras
+        aplicarExtrasFichero($fichero,$extra);
+    
+    }
+
     function aplicarExtrasWP($obj, $extra){
 
 
         if(array_search("theme", $extra)){
-            echo "<p>Tema WP instalado actualmente:</p>";
+            echo "<p>Tema PrestaShop instalado actualmente:</p>";
             //echo var_export($obj->datosConexBD);
         }
 
