@@ -169,7 +169,7 @@
         $pr->setConex($conexionBd);
 
         
-        //$pr->checkTheme($bdPrefix);
+        $pr->checkTheme($bdPrefix);
         echo "<br>---------------------";
         echo "<br> Versión de PrestaShop:<strong>". $pr->version . "</strong><br>";
         //var_dump($wp->getPluginsThemeFailed());
@@ -189,7 +189,7 @@
         }
 
         //MostrarErroLog
-        aplicarExtrasWP($pr,$extra);
+        aplicarExtrasWP($pr,$extra,);
         //Otros extras
         aplicarExtrasFichero($fichero,$extra);
     
@@ -199,8 +199,8 @@
 
 
         if(array_search("theme", $extra)){
-            echo "<p>Tema PrestaShop instalado actualmente:</p>";
-            //echo var_export($obj->datosConexBD);
+            echo "<p>Tema instalado actualmente:</p>";
+            echo var_export($obj->datosConexBD);
         }
 
          

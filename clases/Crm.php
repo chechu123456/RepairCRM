@@ -222,21 +222,49 @@ class Crm{
   
     //Verificar Tema 
     public function checkTheme($bdPrefix){
-        $sql = "SELECT option_name, option_value  FROM ".$bdPrefix."options WHERE `option_name` LIKE 'template' OR `option_name` LIKE 'stylesheet' OR `option_name` LIKE 'current_theme'";
+        if($this->crm == "wp"){
+            $sql = "SELECT option_name, option_value  FROM ".$bdPrefix."options WHERE `option_name` LIKE 'template' OR `option_name` LIKE 'stylesheet' OR `option_name` LIKE 'current_theme'";
+        }else if($this->crm == "pr"){
+            $sql = "SELECT theme_name FROM ".$bdPrefix."shop WHERE `active` LIKE '1'";
+        }
         $result = $this->conex->query($sql);
         if ($result->num_rows > 0) {
             // Mostrar resultados
             $cont=0;
-            while($row = $result->fetch_assoc()) {
-                if($row['option_name'] == "stylesheet"|| $row['option_name'] == "template"){
-                    $this->valorTheme= $row['option_value'];
-                    $cont++;
+
+            if($this->crm == "wp"){
+                while($row = $result->fetch_assoc()) {
+                    if($row['option_name'] == "stylesheet"|| $row['option_name'] == "template"){
+                        $this->valorTheme= $row['option_value'];
+                        $cont++;
+                    }
+                    
                 }
-                
-            }
-            if($cont == 2){
+
+                if($cont == 2){
+                    echo "<p>Tema actual: $this->valorTheme</p>";
+                    $directorio = $this->pathTheme. $this->valorTheme;
+                    if (is_dir($directorio)){
+                        $archivos = scandir($directorio);
+                        if( count($archivos) > 2) {
+                            echo "<p>El $directorio EXISTE y contiene archivos</p>";
+                        } else {
+                            echo "El directorio está vacío";
+                        }
+                    }else{
+                        echo "<p>El $directorio NO existe</p>";
+                    }
+                }   
+            }else if($this->crm == "pr"){
+
+                while($row = $result->fetch_assoc()) {
+                        $this->valorTheme= $row['theme_name'];
+                }
+
                 echo "<p>Tema actual: $this->valorTheme</p>";
                 $directorio = $this->pathTheme. $this->valorTheme;
+                echo $directorio;
+
                 if (is_dir($directorio)){
                     $archivos = scandir($directorio);
                     if( count($archivos) > 2) {
@@ -247,7 +275,9 @@ class Crm{
                 }else{
                     echo "<p>El $directorio NO existe</p>";
                 }
-            }   
+            }
+
+           
         } else {
             echo "0 resultados";
         }
