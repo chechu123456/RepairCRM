@@ -41,7 +41,7 @@
                             }elseif($accion == "offAll"){                    
                                 $this->comprobarPluginActivado($this->directorio.$archivo); 
                             }elseif($accion == "offError"){
-                                if(in_array($archivo,$pluginFail)){
+                                if(in_array($archivo,$pluginFail)){                                
                                     $this->comprobarPluginActivado($this->directorio.$archivo); 
                                 }
                             }else{                            
@@ -53,6 +53,9 @@
             }else{
                 echo "<p>No se han realizado cambios en los ficheros</p>";
             }
+
+            echo "<p>Desactivado</p>";
+            print_r($pluginFail). "<br>";
 
 
         }

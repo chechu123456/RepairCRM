@@ -93,7 +93,7 @@ class Crm{
 
     //Obtener los ErrorLogs de la web
     public function getErrorLog(){
-        echo "<p>Opción marcada de WordPress: $this->pluginsWp</p>";
+        echo "<p>Opción marcada: $this->pluginsWp</p>";
         if(empty($this->errorLogRaiz)){
             $today = date("d-M-Y");
             //Obtener las últimas líneas del fichero del día de hoy
@@ -151,7 +151,11 @@ class Crm{
         $this->getErrorsFatal();
         $palabras =   $this->palabrasAbuscarError;
         //Borrar - Solo VALIDO PARA WORDPRESS
-        $palabras =  array('plugins', 'themes');
+        if($this->crm == "wp"){
+            $palabras =  array('plugins', 'themes');
+        }else if($this->crm == "pr"){
+            $palabras =  array('modules', 'themes');
+        }
         
         array_walk_recursive($this->arrayPluginsThemeFailed, function ($value, $key) use ($palabras) {
 
