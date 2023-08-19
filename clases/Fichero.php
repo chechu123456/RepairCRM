@@ -1,6 +1,6 @@
 <?php
 
-    class Fichero extends WordPress{
+    class Fichero{
         public $directorio;
         public $url;
         public $contenidoDirectorio = array();
@@ -26,29 +26,33 @@
             //Comprobar si existe el directorio "Estados" y borrar todo el contenido
             $this->carpetaEstados();
             if($accion != "nothing"){
-                $directorio = opendir($this->directorio);
-                // Recorre todos los elementos del directorio
-                while (($archivo = readdir($directorio)) !== false)  {
-                    // Se muestran todos los archivos y carpetas excepto "." y ".."
-                    if ($archivo != "." && $archivo != "..") {
-                        // Si es un directorio se recorre recursivamente
-                        if (is_dir($this->directorio. $archivo)) {
-                            $this->listarContenido($archivo);
-                            if($accion == "onAll"){
-                                echo ($cache) ? $this->borrarCache(): "<p>Cache NO borrada</p>";
-                                $this->comprobarPluginDesactivado($this->directorio.$archivo);
-                                echo $this->crearPag($archivo);
-                            }elseif($accion == "offAll"){                    
-                                $this->comprobarPluginActivado($this->directorio.$archivo); 
-                            }elseif($accion == "offError"){
-                                if(in_array($archivo,$pluginFail)){                                
+                if(file_exists($this->directorio)){
+                    $directorio = opendir($this->directorio);
+                    // Recorre todos los elementos del directorio
+                    while (($archivo = readdir($directorio)) !== false)  {
+                        // Se muestran todos los archivos y carpetas excepto "." y ".."
+                        if ($archivo != "." && $archivo != "..") {
+                            // Si es un directorio se recorre recursivamente
+                            if (is_dir($this->directorio. $archivo)) {
+                                $this->listarContenido($archivo);
+                                if($accion == "onAll"){
+                                    echo ($cache) ? $this->borrarCache(): "<p>Cache NO borrada</p>";
+                                    $this->comprobarPluginDesactivado($this->directorio.$archivo);
+                                    echo $this->crearPag($archivo);
+                                }elseif($accion == "offAll"){                    
                                     $this->comprobarPluginActivado($this->directorio.$archivo); 
+                                }elseif($accion == "offError"){
+                                    if(in_array($archivo,$pluginFail)){                                
+                                        $this->comprobarPluginActivado($this->directorio.$archivo); 
+                                    }
+                                }else{                            
+                                    echo "Error solicitud al renombrar los ficheros";
                                 }
-                            }else{                            
-                                echo "Error solicitud al renombrar los ficheros";
-                            }
-                        } 
+                            } 
+                        }
                     }
+                }else{
+                    echo "<p>No se ha localizado el directorio ".$this->directorio."</p>";
                 }
             }else{
                 echo "<p>No se han realizado cambios en los ficheros</p>";

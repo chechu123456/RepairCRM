@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vaguineitor3000</title>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+    <script src='https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>
 </head>
 <body>
     <div class="contenedorPrincipal">
@@ -85,9 +87,56 @@
 
             </form>
             <br>
-            <button>Cambiar tema</button>
+            <button class="changeTheme">Cambiar tema</button>
+        </div>
+        <div id="popupTema">
+
         </div>
     </div>
-     
+     <script>
+        //Al hacer click en change theme, mostrar los temas
+        $(document).on("click", ".changeTheme", function(e){
+            e.preventDefault();
+
+            $.ajax({
+                method: "POST",
+                url: "changeTheme/getTheme.php",
+                //Los datos q envio:
+                // - Primer valor, es el valor del POST del  fichero "procesador"
+                // - Segundo valor es lo que almacena el input del formulario
+                data: {
+                    crmOpcion: $('#crmOpcion').val()
+                },
+                beforeSend: function() {
+                    $("#popupTema").html();
+                    $("#popupTema").html('<div class="contenedorCarga"><img class="imgLoading" src="https://www.iecm.mx/www/sites/ciudadanosuni2esdeley/plugins/event-calendar-wd/assets/loading.gif"></div>');
+                }
+            })
+            .done(function(data) {
+                $("#popupTema").html();
+
+                console.log(data);
+                $('#popupTema').append(data);
+
+                /*
+                usuarioOK = "Usuario y contraseña OK";
+                //console.log(data);
+                if(data.includes(usuarioOK)){
+                    //usuario y contraseña coinciden
+                    window.location.href = "../panel/index.php";
+                }else{
+                    //usuario y contraseña no coinciden
+                    $(".contIzqPagsInternas").html();
+                    $('.contIzqPagsInternas').html(contIzq);
+                    swal("ERROR!", "El usuario o la contraseña no coinciden", "warning");
+                }
+                //alert(data);
+                */
+            })
+            .fail(function() {
+                swal("ERROR!", "Ubo un problema al conectarse al Servidor. Intentalo mas tarde", "warning");
+            });
+        });
+     </script>
 </body>
 </html>

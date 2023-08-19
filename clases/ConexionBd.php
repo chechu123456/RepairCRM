@@ -25,7 +25,7 @@ class ConexionBd {
 
     public function getDatosConexBD(){
         if($this->crm == "wp"){
-            $palabraBuscada = ["define( 'DB_NAME',", "define( 'DB_USER',", "define( 'DB_PASSWORD',", "define( 'DB_HOST'", '$table_prefix = ' ];
+            $palabraBuscada = ["DB_NAME", "DB_USER", "DB_PASSWORD", "DB_HOST", 'table_prefix' ];
         
             // Abre el archivo en modo lectura
             $archivoPuntero = fopen($this->pathConexBD, 'r');
@@ -120,7 +120,7 @@ class ConexionBd {
 
                  // Verificar si hubo algún error en la conexión
                 if ($this->conex->connect_error) {
-                    die("Error en la conexión a la base de datos: " . $this->conex->connect_error);
+                    echo "<p>Error en la conexión a la base de datos: " . $this->conex->connect_error . "</p>";
                 }
 /*
                 if (!$this->conex) {
