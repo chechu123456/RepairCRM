@@ -89,6 +89,7 @@
             <br>
             <button class="changeTheme">Cambiar tema</button>
         </div>
+        <br>
         <div id="popupTema">
 
         </div>
@@ -97,7 +98,6 @@
         //Al hacer click en change theme, mostrar los temas
         $(document).on("click", ".changeTheme", function(e){
             e.preventDefault();
-
             $.ajax({
                 method: "POST",
                 url: "changeTheme/getTheme.php",
@@ -113,9 +113,9 @@
                 }
             })
             .done(function(data) {
-                $("#popupTema").html();
+                $("#popupTema").html("");
 
-                console.log(data);
+                //console.log(data);
                 $('#popupTema').append(data);
 
                 /*
@@ -132,6 +132,42 @@
                 }
                 //alert(data);
                 */
+            })
+            .fail(function() {
+                swal("ERROR!", "Ubo un problema al conectarse al Servidor. Intentalo mas tarde", "warning");
+            });
+        });
+
+        $(document).on("click", ".enviarTema", function(e){
+            e.preventDefault();
+           
+            $.ajax({
+                method: "POST",
+                url: "changeTheme/changeTheme.php",
+                //Los datos q envio:
+                // - Primer valor, es el valor del POST del  fichero "procesador"
+                // - Segundo valor es lo que almacena el input del formulario
+                data: {
+                    crmOpcion: $('#crmOpcion').val(),
+                    tema: $(this).parent().siblings().html()
+                },
+                beforeSend: function() {
+                    $("#popupTema").html();
+                    $("#popupTema").html('<div class="contenedorCarga"><img class="imgLoading" src="https://www.iecm.mx/www/sites/ciudadanosuni2esdeley/plugins/event-calendar-wd/assets/loading.gif"></div>');
+                }
+            })
+            .done(function(data) {
+                $("#popupTema").html("");
+                OK = "OK";
+                //console.log(data);
+                if(data.includes(OK)){
+                    swal("OK!", "Tema Cambiado", "success");
+                }else{
+                    swal("ERROR!", "No se ha podido realizar el cambio de Tema", "warning");
+                }
+
+                console.log(data);
+
             })
             .fail(function() {
                 swal("ERROR!", "Ubo un problema al conectarse al Servidor. Intentalo mas tarde", "warning");

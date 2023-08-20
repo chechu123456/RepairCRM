@@ -53,7 +53,7 @@
     function recorrerArray($temas){
         $filas = "";
         for($i=0; $i < count($temas); $i++){
-            $filas .= "<tr><td>".$temas[$i]."</td><td><button id='".$temas[$i]."'>Cambiar</button></td></tr>";
+            $filas .= "<tr><td>".$temas[$i]."</td><td><button class='enviarTema ".$temas[$i]."'>Cambiar</button></td></tr>";
         }
         return $filas;
     }
