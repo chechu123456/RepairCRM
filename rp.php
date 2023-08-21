@@ -28,7 +28,8 @@
 </head>
 <body>
     <?php
-    //var_dump($_POST);
+    var_dump($_POST);
+    echo "<br>";
     if( isset($_POST['crmOpcion']) &&  isset($_POST['url']) ){
     
         $crmOpcion = $_POST['crmOpcion'];
