@@ -118,20 +118,7 @@
                 //console.log(data);
                 $('#popupTema').append(data);
 
-                /*
-                usuarioOK = "Usuario y contraseña OK";
-                //console.log(data);
-                if(data.includes(usuarioOK)){
-                    //usuario y contraseña coinciden
-                    window.location.href = "../panel/index.php";
-                }else{
-                    //usuario y contraseña no coinciden
-                    $(".contIzqPagsInternas").html();
-                    $('.contIzqPagsInternas').html(contIzq);
-                    swal("ERROR!", "El usuario o la contraseña no coinciden", "warning");
-                }
-                //alert(data);
-                */
+           
             })
             .fail(function() {
                 swal("ERROR!", "Ubo un problema al conectarse al Servidor. Intentalo mas tarde", "warning");

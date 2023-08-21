@@ -55,7 +55,7 @@
 						<label>Navigation</label>
 					</li>
 					<li class="nav-item">
-						<a href="index.html" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
+						<a href="index.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
 					</li>
 					<li class="nav-item pcoded-menu-caption">
 						<label>Herramientas</label>
@@ -73,13 +73,19 @@
 						<label>Reinstalar Core</label>
 					</li>
 					<li class="nav-item">
-						<a href="cambiarTema.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sak-cli Replace</span></a>
+						<a href="sakcli.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sak-cli Replace</span></a>
 					</li>
 					<li class="nav-item pcoded-menu-caption">
 						<label>Extras</label>
 					</li>
 					<li class="nav-item">
-						<a href="cambiarTema.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Reparar DB WP </span></a>
+						<a href="repararbd.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Reparar DB WP </span></a>
+					</li>
+					<li class="nav-item">
+						<a href="almacenamiento.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Almacenamiento </span></a>
+					</li>
+					<li class="nav-item">
+						<a href="errorLogs.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Mostrar ErrorLogs </span></a>
 					</li>
 				</ul>					
 			</div>
