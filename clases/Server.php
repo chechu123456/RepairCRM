@@ -15,6 +15,10 @@
             $this->extensiones = get_loaded_extensions();
             $this->memoryLimit = ini_get('memory_limit');
         }
+
+        function getVersionPHP(){
+            return $this->versionPhp;
+        }
         
         function extensionesCoincidentes($extensionesRmV)
         {

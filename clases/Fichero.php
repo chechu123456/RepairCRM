@@ -67,7 +67,7 @@
  
 
         function listarContenido($carpetas){
-            echo $html= "<li>" . $carpetas . "</li>";
+            $html= "<li>" . $carpetas . "</li>";
         }
 
         function desactivarPlugins($plugin){
@@ -228,8 +228,11 @@
                     }
                 }
             }
-
             return $this->ficherosVacios;
+        }
+
+        function num_ficheros_vacios(){
+            return count($this->ficherosVacios);
         }
 
         public function handlerPHP($directorio){

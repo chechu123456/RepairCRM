@@ -7,6 +7,7 @@ class ConexionBd {
     private $database;
     private $bdPrefix;
     private $conex;
+    private $datosConexion = [];
 
     private $datosConexBD = [];
     private $pathConexBD;
@@ -20,6 +21,10 @@ class ConexionBd {
 
     public function getPrefixBD(){
         return $this->bdPrefix;
+    }
+
+    public function getDatosConexion(){
+        return $this->datosConexion;
     }
 
 
@@ -101,7 +106,7 @@ class ConexionBd {
 
         //Para versiones superiores a la 5.6
         if(array_search("nd_mysqli",$extensiones) || array_search("mysqli",$extensiones)){
-
+            /*
                 echo "<p>Datos conex a BD:</p>";
                 echo "Usuario:". $this->username;
                 echo "<br>";
@@ -113,6 +118,13 @@ class ConexionBd {
                 echo "<br>";
                 echo "Prefijo: ".$this->bdPrefix;
                 echo "<br>";
+            */
+                $this->datosConexion["Usuario"] = $this->username;
+                $this->datosConexion["Contraseña"] = $this->password;
+                $this->datosConexion["Base de Datos"] = $this->database;
+                $this->datosConexion["Host"] = $this->host;
+                $this->datosConexion["Prefijo"] = $this->bdPrefix;
+
                 $this->conex = mysqli_connect($this->host, $this->username, $this->password, $this->database);
 
                 //$this->conex = mysqli_connect($this->host, $this->username,  $this->password, $this->database);

@@ -18,6 +18,9 @@ class Crm{
     public $pluginsWp = "";
     public $extra = [];
 
+    public $checkThemeVar = [];
+    public $errorLogAndPath = [];
+
     private $conex;
 
 
@@ -51,6 +54,14 @@ class Crm{
 
     public function setPathTheme($pathTheme){
         $this->pathTheme = $pathTheme;
+    }
+
+    public function getCheckThemeVar(){
+        return $this->checkThemeVar;
+    }
+
+    public function getErrorLogAndPath(){
+        return $this->errorLogAndPath;
     }
 
     public function setConex($conex){
@@ -93,12 +104,11 @@ class Crm{
 
     //Obtener los ErrorLogs de la web
     public function getErrorLog(){
-        echo "<p>Opción marcada: $this->pluginsWp</p>";
+//echo "<p>Opción marcada: $this->pluginsWp</p>";
         if(empty($this->errorLogRaiz)){
             $today = date("d-M-Y");
             //Obtener las últimas líneas del fichero del día de hoy
             exec("tail -25 ".$this->pathErrorLog[0]." | grep '$today'", $errorToday);
-
             //Si no hay Errores en el fichero del raiz del wordpress
             if(empty($errorToday)){
                 array_push($this->errorLogRaiz,"<p>No se encontraron errores en el errorLog --> ".$this->pathErrorLog[0] ." - Buscando errores en ". $this->pathErrorLog[1]."</p>");
@@ -132,6 +142,32 @@ class Crm{
         
     }
 
+    //Obtener errorlogs del sitio web para enviarlos a la tabla
+    public function getErrorLogTable(){
+        $today = date("d-M-Y");
+        if(file_exists($this->pathErrorLog[0])){
+            //Obtener las últimas líneas del fichero del día de hoy
+            exec("tail -25 ".$this->pathErrorLog[0]." | grep '$today'", $errorToday);
+            $errorLogAndPath["Errores Hoy en: ".$this->pathErrorLog[0]] = $errorToday;
+        }
+
+        if(file_exists($this->pathErrorLog[1])){
+            //Buscar si hay errores de hoy en el fichero del wp-admin
+            exec("tail -25 ".$this->pathErrorLog[1]." | grep '$today'", $errorToday2);
+            $errorLogAndPath["Errores Hoy en: ".$this->pathErrorLog[1]] = $errorToday2;
+
+        }
+
+        //Coger los últimos errores encontrados de cualquier fecha
+        if(file_exists($this->pathErrorLog[0])){
+            exec("tail -30 ".$this->pathErrorLog[1]."", $lastErrors);
+            $errorLogAndPath["Ultimas 30 líneas de errores en: ".$this->pathErrorLog[1]] = $lastErrors;
+        }
+
+        return $errorLogAndPath;
+
+    }
+
     //Encontrar dentro del Fichero error log, los Fatal Errors
     public function getErrorsFatal(){
         $palabra = 'Fatal error';
@@ -150,17 +186,17 @@ class Crm{
         $this->getErrorLog();
         $this->getErrorsFatal();
         $palabras =   $this->palabrasAbuscarError;
-        //Borrar - Solo VALIDO PARA WORDPRESS
+
         if($this->crm == "wp"){
             $palabras =  array('plugins', 'themes');
         }else if($this->crm == "pr"){
             $palabras =  array('modules', 'themes');
         }
-        
+
         array_walk_recursive($this->arrayPluginsThemeFailed, function ($value, $key) use ($palabras) {
 
             $pluginTema = explode("/", $this->arrayPluginsThemeFailed[$key]);
-
+        
             array_walk_recursive($pluginTema, function ($value, $key2) use ($palabras, $pluginTema) {
                           
                 if (in_array($value, $palabras)) {
@@ -182,6 +218,7 @@ class Crm{
             
 
        });
+
 
         array_unique($this->pluginsFail);
         array_unique($this->themeFail);
@@ -244,19 +281,20 @@ class Crm{
                     }
                     
                 }
+                $this->checkThemeVar["tema"] = $this->valorTheme;
 
                 if($cont == 2){
-                    echo "<p>Tema actual: $this->valorTheme</p>";
+        //echo "<p>Tema actual: $this->valorTheme</p>";
                     $directorio = $this->pathTheme. $this->valorTheme;
                     if (is_dir($directorio)){
                         $archivos = scandir($directorio);
                         if( count($archivos) > 2) {
-                            echo "<p>El $directorio EXISTE y contiene archivos</p>";
+                            $this->checkThemeVar["respuesta"] = "El directorio EXISTE y CONTIENE archivos";
                         } else {
-                            echo "El directorio está vacío";
+                            $this->checkThemeVar["respuesta"] = "El directorio está vacío";
                         }
                     }else{
-                        echo "<p>El $directorio NO existe</p>";
+                        $this->checkThemeVar["respuesta"] = "El $directorio NO existe";
                     }
                 }   
             }else if($this->crm == "pr"){
@@ -265,19 +303,21 @@ class Crm{
                         $this->valorTheme= $row['theme_name'];
                 }
 
-                echo "<p>Tema actual: $this->valorTheme</p>";
+                $this->checkThemeVar["tema"] = $this->valorTheme;
+
+        //echo "<p>Tema actual: $this->valorTheme</p>";
                 $directorio = $this->pathTheme. $this->valorTheme;
-                echo $directorio;
+        //echo $directorio;
 
                 if (is_dir($directorio)){
                     $archivos = scandir($directorio);
                     if( count($archivos) > 2) {
-                        echo "<p>El $directorio EXISTE y contiene archivos</p>";
+                        $this->checkThemeVar["respuesta"] = "El $directorio EXISTE y contiene archivos";
                     } else {
-                        echo "El directorio está vacío";
+                        $this->checkThemeVar["respuesta"] = "El directorio está vacío";
                     }
                 }else{
-                    echo "<p>El $directorio NO existe</p>";
+                    $this->checkThemeVar["respuesta"] = "El $directorio NO existe";
                 }
             }
 

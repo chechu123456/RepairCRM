@@ -246,7 +246,7 @@
 											</div>
 											<ul class="breadcrumb">
 												<li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
-												<li class="breadcrumb-item">Herramientas</a></li>
+												<li class="breadcrumb-item">Herramientas</li>
 												<li class="breadcrumb-item"><a href="prestashop.php">Prestashop</a></li>
 
 											</ul>

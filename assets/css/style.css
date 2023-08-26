@@ -8595,3 +8595,15 @@ h3.titleFixCMS {
 * {
     font-size: calc(100% + 0.25px);
 }
+
+.errorLogFilaTabla{
+    font-size: 14px;
+    width: 100%;
+}
+
+.table td, .table th{
+    white-space: wrap;
+}
+.pcoded-header.headerpos-fixed ~ .pcoded-main-container{
+    padding-top: 0;
+}
