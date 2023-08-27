@@ -304,7 +304,7 @@
 																</p>
 
 																<p>
-																	<input type="radio" name="pluginsWp"  value="onAll">
+																	<input type="radio" name="pluginsWp"  value="onAllInfo">
 																	<label aria-describedby="onAllInfo" >Activar todos módulos o plugins</label>
 																	<small id="onAllInfo" class="form-text text-muted">Cada módulo que activa, mostrará una vista previa de como carga la web </small>
 																</p>

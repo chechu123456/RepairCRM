@@ -1,8 +1,8 @@
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
+    
 	<title>Fix CMS</title>
 	<!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,16 +22,29 @@
 	<!-- Favicon icon -->
 	<link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
 	<!-- fontawesome icon -->
-	<link rel="stylesheet" href="assets/fonts/fontawesome/css/fontawesome-all.min.css">
+	<script src="https://kit.fontawesome.com/299d0a42cf.js" crossorigin="anonymous"></script>
+
+
 	<!-- animation css -->
 	<link rel="stylesheet" href="assets/plugins/animation/css/animate.min.css">
 
 	<!-- vendor css -->
 	<link rel="stylesheet" href="assets/css/style.css">
+
+    <!-- JQUERY -->
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js?ver=1.4'></script>
+
 </head>
 
-<body class="">
-	<!-- [ Pre-loader ] start -->
+<?php
+    $directorio = 'estados/';
+    $archivos = scandir($directorio);
+
+?>
+
+
+    <!-- [ Pre-loader ] start -->
 	<div class="loader-bg">
 		<div class="loader-track">
 			<div class="loader-fill"></div>
@@ -73,13 +86,13 @@
 						<label>Reinstalar Core</label>
 					</li>
 					<li class="nav-item">
-						<a href="sakcli.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sak-cli Replace</span></a>
+						<a href="cambiarTema.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Sak-cli Replace</span></a>
 					</li>
 					<li class="nav-item pcoded-menu-caption">
 						<label>Extras</label>
 					</li>
 					<li class="nav-item">
-						<a href="repararbd.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Reparar DB WP </span></a>
+						<a href="cambiarTema.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Reparar DB WP </span></a>
 					</li>
 					<li class="nav-item">
 						<a href="almacenamiento.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Almacenamiento </span></a>
@@ -228,8 +241,6 @@
 		</div>
 	</header>
 	<!-- [ Header ] end -->
-
-	<!-- [ Main Content ] start -->
 	<div class="pcoded-main-container">
 		<div class="pcoded-wrapper">
 			<div class="pcoded-content">
@@ -241,218 +252,35 @@
 								<div class="page-block">
 									<div class="row align-items-center">
 										<div class="col-md-12">
-											<div class="page-header-title">
-												<h5>PrestaShop</h5>
-											</div>
-											<ul class="breadcrumb">
-												<li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
-												<li class="breadcrumb-item">Herramientas</li>
-												<li class="breadcrumb-item"><a href="prestashop.php">Prestashop</a></li>
+                                            <h1>Índice</h1>
+                                            <ul>
+                                            <?php
+                                                foreach ($archivos as $archivo) {
+                                                    if ($archivo != '.' && $archivo != '..') {
+                                                        echo "<li><a href='#$archivo'>$archivo</a></li>";
+                                                    }
+                                                }
+                                            ?>
 
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- [ breadcrumb ] end -->
-							<!-- [ Main Content ] start -->
-							<form action="rp.php" method="post">
+                                            </ul>   
 
-								<div class="row">
-									<!-- [ form-element ] start -->
-									<div class="col-sm-12">
-										<div class="card">
-											<div class="card-header">
-												<h5>Dominio</h5>
-											</div>
-											<div class="card-body">
-												<div class="row">
-													<div class="col-md-6">
-														<div class="form-group">
-															<label for="urlEscanear">URL a escanear</label>
-															<input type="url" name="url" class="form-control" id="urlEscanear" aria-describedby="urlInfo" placeholder="Introduce una url" value="https://<?=$_SERVER['SERVER_NAME']?>">
-															<small id="urlInfo" class="form-text text-muted">Una vez activados los plugins mostrará la información cargada en esa url</small>
-														</div>
-														<div class="form-group">
-															<label>Obtener detalles del dominio <a href="https://sered.thechechubark.online/?dm=<?=$_SERVER['SERVER_NAME']?>" target="_blank"><?=$_SERVER['SERVER_NAME']?></a></label>
-														</div>                                                       
-													</div>
-												</div>                                            
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<!-- [ form-element ] start -->
-									<div class="col-sm-12">
-										<div class="card">
-											<div class="card-header">
-												<h5>Configuraciones</h5>
-											</div>
-											<div class="card-body">
-												<br>
-												<div class="row">
-													<div class="col-md-6">
-														<h5>Acciones a realizar</h5>
-														<hr>
-															<div class="form-group">
-
-																<p>
-																	<input type="radio" name="modulosPr" id="modulosPr" value="onAllHTTP" disabled="disabled">
-																	<label for="modulosPr" aria-describedby="onAllHTTP" >Activar todos los módulos (NO disponible) </label>
-																	<small id="onAllHTTP" class="form-text text-muted">Activa todos los módulos SIN previsualización</small>
-																</p>
-
-																<p>
-																	<input type="radio" name="modulosPr" id="modulosPr" value="onAllInfo">
-																	<label for="modulosPr" aria-describedby="onAllInfo" >Activar todos los módulos con Vista Previa</label>
-																	<small id="onAll" class="form-text text-muted">Cada módulo que activa, mostrará una vista previa de como carga la web </small>
-																</p>
-
-																<p>
-																	<input type="radio" name="modulosPr" id="modulosPr" value="offAll"  checked="checked">
-																	<label for="modulosPr">Desactivar todos los módulos</label>
-																</p>
-
-																<p>
-																	<input type="radio" name="modulosPr" id="modulosPr" value="offBase">
-                    												<label for="modulosPr">Desactivar módulos base de Prestashop</label>
-																</p>
-
-																<p>
-																	<input type="radio" name="modulosPr" id="modulosPr" value="offAny">
-																	<label for="">Desactivar TODOS los módulos MENOS los base de Prestashop</label>
-																</p>
-
-																<p>
-																	<input type="radio" name="modulosPr" id="modulosPr" value="offError">
-                    												<label for="modulosPr">Desactivar SOLO los módulos que aparecen en el errorlog </label>
-																</p>
-
-																<p>
-																	<input type="radio" name="modulosPr" id="modulosPr" value="nothing"  checked="checked">
-																	<label for="modulosPr">No hacer cambios</label>
-																</p>
-
-															</div>
-															
-													</div>
-													<div class="col-md-6">
-														<h5>Opciones extra</h5>
-														<hr>
-														<p>
-															<input type="checkbox" name="extra[]" value="emptyFiles" id="extra" checked="checked" >
-															<label>Comprobar ficheros vacíos</label>
-														</p>
-
-														<p>
-															<input type="checkbox" name="extra[]" value="theme" id="extra" checked="checked">
-															<label>Verificar Tema en uso y existencia de ficheros</label>
-														</p>
-
-														<p>
-															<input type="checkbox" name="extra[]" value="cache" id="extra">
-															<label>Borrar cache LiteSpeed por cada plugin activado</label>
-														</p>
-
-													</div>
-												</div>
-												<h5 class="mt-5">Error_logs</h5>
-												<hr>
-												<div class="row">
-													<div class="col-md-6">
-
-														<p>
-															<input type="checkbox" name="extra[]"  value="mostrarErrorLog" id="mostrarErrorLog" checked="checked">
-															<label for="mostrarErrorLog">Mostrar error_log hoy</label>
-														</p>
-														<p>
-															<input type="radio" name="extra[]" value="eliminarErrorLog"  id="eliminarErrorLog" >
-															<label for="eliminarErrorLog">Eliminar error_log al finalizar el proceso</label>
-														</p>
-														<p>
-															<input type="radio" name="extra[]" value="renombrarErrorLog" id="renombrarErrorLog">
-															<label for="renombrarErrorLog">Renombrar error_log al finalizar el proceso</label>
-														</p>
-														<p>
-															<input type="radio" name="extra[]" value="nothingErrorLog" id="nothingErrorLog" checked="checked">
-															<label for="noCambiarErrorLog">No hacer nada con el error_log</label>
-														</p>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<input type="hidden" name="crmOpcion" id="crmOpcion" value="prestashop" >
-
-								<div class="btnEnviar">
-									<button type="submit" class="btn btn-primary mb-2">Procesar</button>
-								</div>
-							</form>
-
-							<!-- [ Main Content ] end -->
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- [ Main Content ] end -->
-
-	<!-- Warning Section start -->
-	<!-- Older IE warning message -->
-	<!--[if lt IE 11]>
-        <div class="ie-warning">
-            <h1>Warning!!</h1>
-            <p>You are using an outdated version of Internet Explorer, please upgrade
-               <br/>to any of the following web browsers to access this website.
-            </p>
-            <div class="iew-container">
-                <ul class="iew-download">
-                    <li>
-                        <a href="http://www.google.com/chrome/">
-                            <img src="assets/images/browser/chrome.png" alt="Chrome">
-                            <div>Chrome</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.mozilla.org/en-US/firefox/new/">
-                            <img src="assets/images/browser/firefox.png" alt="Firefox">
-                            <div>Firefox</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://www.opera.com">
-                            <img src="assets/images/browser/opera.png" alt="Opera">
-                            <div>Opera</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.apple.com/safari/">
-                            <img src="assets/images/browser/safari.png" alt="Safari">
-                            <div>Safari</div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
-                            <img src="assets/images/browser/ie.png" alt="">
-                            <div>IE (11 & above)</div>
-                        </a>
-                    </li>
-                </ul>
+                                            <?php
+                                                foreach ($archivos as $archivo) {
+                                                    if ($archivo != '.' && $archivo != '..') {
+                                                        echo "<hr id='$archivo'  class='separarEstados'>";
+                                                        echo "<h4 >$archivo</h4>";
+                                                        echo file_get_contents($directorio.$archivo);
+                                                        //echo "<embed src='$directorio.$archivo' width='100%' height='800px' onerror=\"alert('URL invalid !!');\" />";
+                                                    }
+                                                }
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p>Sorry for the inconvenience!</p>
         </div>
-    <![endif]-->
-	<!-- Warning Section Ends -->
-
-	<!-- Required Js -->
-	<script src="assets/js/vendor-all.min.js"></script>
-	<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-	<script src="assets/js/pcoded.min.js"></script>
-
-</body>
-
-</html>
+    </div>

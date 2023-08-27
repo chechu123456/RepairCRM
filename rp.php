@@ -37,7 +37,9 @@
 	<!-- Favicon icon -->
 	<link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
 	<!-- fontawesome icon -->
-	<link rel="stylesheet" href="assets/fonts/fontawesome/css/fontawesome-all.min.css">
+	<script src="https://kit.fontawesome.com/299d0a42cf.js" crossorigin="anonymous"></script>
+
+
 	<!-- animation css -->
 	<link rel="stylesheet" href="assets/plugins/animation/css/animate.min.css">
 
@@ -54,6 +56,11 @@
 <?php
     $errores = array();
     $datos = array();
+
+	if(empty($_POST)){
+		header("Location: ./index.php");
+	}
+
     if( isset($_POST['crmOpcion']) &&  isset($_POST['url']) ){
     
         $crmOpcion = $_POST['crmOpcion'];
@@ -179,12 +186,16 @@
             $fichero->obtenerCarpetasDirectorio($pluginsWp,  $datos["pluginsThemeFailed"] = $wp->getPluginsThemeFailed(), $cache = false);
         }
 
+		$datos["estadosWeb"] = $fichero->getResultCrearPag();
+
+
 		$datos["checkThemeVar"] = $wp->getCheckThemeVar();
 		$datos["getErrorLogTable"] = $wp->getErrorLogTable();
         //MostrarErroLog
         aplicarExtrasWP($wp,$extra);
         //Otros extras
         aplicarExtrasFichero($fichero,$extra);
+		
     
     }
 
@@ -493,18 +504,56 @@
 								<div class="page-block">
 									<div class="row align-items-center">
 										<div class="col-md-12">
-											<div class="page-header-title">
+											<div class="page-header-title titleExtremos">
 												<h5>Home</h5>
+												<?php
+													if(isset($_POST["pluginsWp"])){
+														if($_POST["pluginsWp"] == "onAllInfo" || $_POST["pluginsWp"] == "onAllHTTP"){
+														?>	
+															<button id="btnEstadosMostrar" class="btn btn-info activo">Mostrar Estados</button>
+															<button id="btnEstadosOcultar" class="btn btn-info desactivar">Ocultar Estados</button>
+														<?php
+														}
+													}
+												?>
 											</div>
 											<ul class="breadcrumb">
 												<li class="breadcrumb-item"><a href="index.php"><i class="feather icon-home"></i></a></li>
 												<li class="breadcrumb-item"><a href="#!">Dashboard</a></li>
 											</ul>
+										
 										</div>
 									</div>
 								</div>
 							</div>
 							<!-- [ breadcrumb ] end -->
+							
+							<?php 
+								if(!empty($datos["estadosWeb"])){
+							?>
+
+								<div id="capturasEstados" class="desactivar">
+									<?php 
+										echo $datos["estadosWeb"];
+									?>
+
+								</div>
+							<?php
+								}
+							?>
+
+							<?php
+								if(isset($_POST["pluginsWp"])){
+									if($_POST["pluginsWp"] == "onAllInfo" || $_POST["pluginsWp"] == "onAllHTTP"){
+							?>	
+									<div class="btnOcultar2">
+										<button id="btnEstadosOcultar2" class="btn btn-info desactivar">Ocultar Estados</button>
+									</div>
+							<?php
+									}
+								}
+							?>
+
 							<!-- [ Main Content ] start -->
 							<div class="row">
 
@@ -512,60 +561,60 @@
 								<div class="col-xl-3 col-md-6">
 									<div class="card prod-p-card bg-c-red">
 										<div class="card-body">
-											<div class="row align-items-center m-b-25">
-												<div class="col">
-													<h3 class="m-b-0 text-white"><?=$datos['versionCMS']?></h3>
-												</div>
+											<div class="row align-items-center m-b-25">												
 												<div class="col-auto">
-													<i class="fas fa-money-bill-alt text-c-red f-18"></i>
+													<i class="fa-brands fa-wordpress text-c-red f-18"></i>
+												</div>
+												<div class="col">
+													<h3 class="m-b-0 text-white alignRight"><?=$datos['versionCMS']?></h3>
 												</div>
 											</div>
-											<p class="m-b-0 text-white"><span class="label label-danger m-r-10">Versión <?=$crmOpcion?></span></p>
+											<p class="m-b-0 text-white text-center"><span class="label label-danger m-r-10">Versión <?=$crmOpcion?></span></p>
 										</div>
 									</div>
 								</div>
 								<div class="col-xl-3 col-md-6">
 									<div class="card prod-p-card bg-c-blue">
 										<div class="card-body">
-											<div class="row align-items-center m-b-25">
-												<div class="col">
-													<h3 class="m-b-0 text-white"><?=$datos['versionPHP']?></h3>
-												</div>
+											<div class="row align-items-center m-b-25">												
 												<div class="col-auto">
-													<i class="fas fa-database text-c-blue f-18"></i>
+													<i class="fa-brands fa-php text-c-blue f-18"></i>
+												</div>
+												<div class="col">
+													<h3 class="m-b-0 text-white alignRight"><?=$datos['versionPHP']?></h3>
 												</div>
 											</div>
-											<p class="m-b-0 text-white"><span class="label label-primary m-r-10">Versión PHP</span></p>
+											<p class="m-b-0 text-white text-center"><span class="label label-primary m-r-10">Versión PHP</span></p>
 										</div>
 									</div>
 								</div>
 								<div class="col-xl-3 col-md-6">
 									<div class="card prod-p-card bg-c-green">
 										<div class="card-body">
-											<div class="row align-items-center m-b-25">
-												<div class="col">
-													<h3 class="m-b-0 text-white"><?=$datos['memoryLimitPHP']?></h3>
-												</div>
+											<div class="row align-items-center m-b-25">												
 												<div class="col-auto">
-													<i class="fas fa-dollar-sign text-c-green f-18"></i>
+													<i class="fa-solid fa-memory text-c-green f-18"></i>
+												</div>
+												<div class="col">
+													<h3 class="m-b-0 text-white alignRight"><?=$datos['memoryLimitPHP']?></h3>
 												</div>
 											</div>
-											<p class="m-b-0 text-white"><span class="label label-success m-r-10">Memory_limit</span></p>
+											<p class="m-b-0 text-white text-center"><span class="label label-success m-r-10">Memory_limit</span></p>
 										</div>
 									</div>
 								</div>
 								<div class="col-xl-3 col-md-6">
 									<div class="card prod-p-card bg-c-yellow">
 										<div class="card-body">
-											<div class="row align-items-center m-b-25">
-												<div class="col">
-													<h3 class="m-b-0 text-white"><?=$datos['numFicherosVacios']?></h3>
-												</div>
+											<div class="row align-items-center m-b-25">												
 												<div class="col-auto">
-													<i class="fas fa-tags text-c-yellow f-18"></i>
+													<i class="fa-regular fa-file text-c-yellow f-18"></i>
+												</div>
+												<div class="col">
+													<h3 class="m-b-0 text-white alignRight"><?=$datos['numFicherosVacios']?></h3>
 												</div>
 											</div>
-											<p class="m-b-0 text-white"><span class="label label-warning m-r-10">Ficheros Vacíos</span></p>
+											<p class="m-b-0 text-white text-center"><span class="label label-warning m-r-10">Ficheros Vacíos</span></p>
 										</div>
 									</div>
 								</div>
@@ -729,7 +778,7 @@
 													<?php 
 													foreach($datos["datosConexion"] as $key=>$valor) { 
 													?>
-														<h5 class="text-c-red mb-0"> <span class="text-muted"><?=$key.": ".$valor;?></span></h5>
+														<h5 class="text-muted mb-0"> <?=$key.": "?><span class="mb-0 valorBD"><?=$valor;?></span></h5>
 													<?php
 														}
 													?>
@@ -807,7 +856,30 @@
 	<script src="assets/js/vendor-all.min.js"></script>
 	<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 	<script src="assets/js/pcoded.min.js"></script>
+	
+	<script>
+		$("#btnEstadosMostrar").on("click", function(e){
+			$(this).toggleClass('activar').toggleClass('desactivar');
+			$("#capturasEstados").toggleClass('activar').toggleClass('desactivar');
+			$("#btnEstadosOcultar, #btnEstadosOcultar2").toggleClass('desactivar').toggleClass('activar');
+		});
 
-    
+		$("#btnEstadosOcultar").on("click", function(e){
+			$(this).toggleClass('desactivar').toggleClass('activar');
+			$("#btnEstadosOcultar2").toggleClass('desactivar').toggleClass('activar');
+
+			$("#capturasEstados").toggleClass('desactivar').toggleClass('activar');
+			$("#btnEstadosMostrar").toggleClass('activar').toggleClass('desactivar');
+		});
+
+		$("#btnEstadosOcultar2").on("click", function(e){
+			$(this).toggleClass('desactivar').toggleClass('activar');
+			$("#btnEstadosOcultar").toggleClass('desactivar').toggleClass('activar');
+
+			$("#capturasEstados").toggleClass('desactivar').toggleClass('activar');
+			$("#btnEstadosMostrar").toggleClass('activar').toggleClass('desactivar');
+		});
+	</script>
+
 </body>
 </html>

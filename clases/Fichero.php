@@ -5,10 +5,15 @@
         public $url;
         public $contenidoDirectorio = array();
         public $ficherosVacios = [];
+        public $resultCrearPag;
 
         function __construct($directorio, $url){
             $this->directorio = $directorio;
             $this->url = $url;
+        }
+
+        public function getResultCrearPag(){
+            return $this->resultCrearPag;
         }
 
         function crearFichero($nombreFichero, $contenido){
@@ -35,10 +40,10 @@
                             // Si es un directorio se recorre recursivamente
                             if (is_dir($this->directorio. $archivo)) {
                                 $this->listarContenido($archivo);
-                                if($accion == "onAll"){
-                                    echo ($cache) ? $this->borrarCache(): "<p>Cache NO borrada</p>";
+                                if($accion == "onAllInfo"){
+                                    ($cache) ? $this->borrarCache(): "<p>Cache NO borrada</p>";
                                     $this->comprobarPluginDesactivado($this->directorio.$archivo);
-                                    echo $this->crearPag($archivo);
+                                    $this->resultCrearPag .= "<div><br><div class='separarEstados'><h4>$archivo</h4></div><br></div>". $this->crearPag($archivo);
                                 }elseif($accion == "offAll"){                    
                                     $this->comprobarPluginActivado($this->directorio.$archivo); 
                                 }elseif($accion == "offError"){
@@ -57,10 +62,10 @@
             }else{
                 echo "<p>No se han realizado cambios en los ficheros</p>";
             }
-
+/*
             echo "<p>Desactivado</p>";
             print_r($pluginFail). "<br>";
-
+*/
 
         }
 
@@ -102,7 +107,7 @@
 
         function crearPag($plugin){
             $ruta = "estados/".$plugin.".html";
-            echo $plugin ."<br>" . $ruta;
+        //echo $plugin ."<br>" . $ruta;
 
             //File_get_contents vs curl
             $ch = curl_init();

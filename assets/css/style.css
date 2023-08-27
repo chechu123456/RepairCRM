@@ -8604,6 +8604,49 @@ h3.titleFixCMS {
 .table td, .table th{
     white-space: wrap;
 }
-.pcoded-header.headerpos-fixed ~ .pcoded-main-container{
-    padding-top: 0;
+.pcoded-header.headerpos-fixed ~ .pcoded-main-container, .pcoded-content{
+    /*padding-top: 0;*/
+}
+
+.valorBD{
+    font-weight: bolder;
+    color: black;
+}
+
+.alignRight{
+    text-align: right;
+}
+
+.titleExtremos{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#btnEstados a{
+    color:white;
+}
+
+.separarEstados{
+    margin-top: 40px;
+    border: 4px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    padding-top: 10px;
+}
+
+.activo{
+    display: block;
+}
+
+.desactivar{
+    display: none;
+}
+
+.btnOcultar2{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 30px;
 }
