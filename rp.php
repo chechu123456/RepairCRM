@@ -240,7 +240,7 @@
 
 
         //MostrarErroLog
-        aplicarExtrasWP($pr,$extra,);
+        aplicarExtrasWP($pr,$extra);
         //Otros extras
         aplicarExtrasFichero($fichero,$extra);
     

@@ -130,7 +130,7 @@ class ConexionBd {
                 //$this->conex = mysqli_connect($this->host, $this->username,  $this->password, $this->database);
                 //$enlace = mysqli_connect($this->datosConexBD[3], $this->datosConexBD[1], $this->datosConexBD[2], $this->datosConexBD[0]);
 
-                 // Verificar si hubo algún error en la conexión
+                 // Verificar si hHubo algún error en la conexión
                 if ($this->conex->connect_error) {
                     echo "<p>Error en la conexión a la base de datos: " . $this->conex->connect_error . "</p>";
                 }

@@ -295,7 +295,7 @@
 									<div class="col-sm-12">
 										<div class="card">
 											<div class="card-header">
-												<h5>Temas Encontrados</h5>
+												<h5>Notificaciones</h5>
 											</div>
 											<div class="card-body">
                                             <div class="row">
@@ -370,48 +370,18 @@
 	<script src="assets/js/pcoded.min.js"></script>
 
     <script>
-        //Al hacer click en change theme, mostrar los temas
+       
         $(document).on("click", ".changeTheme", function(e){
             e.preventDefault();
-            $.ajax({
-                method: "POST",
-                url: "changeTheme/getTheme.php",
-                //Los datos q envio:
-                // - Primer valor, es el valor del POST del  fichero "procesador"
-                // - Segundo valor es lo que almacena el input del formulario
-                data: {
-                    crmOpcion: $('#crmOpcion').val()
-                },
-                beforeSend: function() {
-                    $("#popupTema").html();
-                    $("#popupTema").html('<div class="contenedorCarga"><img class="imgLoading" src="https://www.iecm.mx/www/sites/ciudadanosuni2esdeley/plugins/event-calendar-wd/assets/loading.gif"></div>');
-                }
-            })
-            .done(function(data) {
-                $("#popupTema").html("");
-
-                //console.log(data);
-                $('#popupTema').append(data);
-
-           
-            })
-            .fail(function() {
-                swal("ERROR!", "Hubo un problema al conectarse al Servidor. Intentalo mas tarde", "warning");
-            });
-        });
-
-        $(document).on("click", ".enviarTema", function(e){
-            e.preventDefault();
            
             $.ajax({
                 method: "POST",
-                url: "changeTheme/changeTheme.php",
+                url: "sakcliProcess.php",
                 //Los datos q envio:
                 // - Primer valor, es el valor del POST del  fichero "procesador"
                 // - Segundo valor es lo que almacena el input del formulario
                 data: {
                     crmOpcion: $('#crmOpcion').val(),
-                    tema: $(this).parent().siblings().html()
                 },
                 beforeSend: function() {
                     $("#popupTema").html();
@@ -424,9 +394,9 @@
                 //console.log(data);
                 if(data.includes(OK)){
                     swal("OK!", "Tema Cambiado", "success");
-                    $("#popupTema").html("El tema se ha cambiado. Verifíquelo: <a href='https://<?=$_SERVER['SERVER_NAME']?>' target='_blank'><?=$_SERVER['SERVER_NAME']?></a> <p>(Puede que tengas que borrar la cache)</p>");
+                    $("#popupTema").html("El CORE se ha restablecido. Verifíquelo: <a href='https://<?=$_SERVER['SERVER_NAME']?>' target='_blank'><?=$_SERVER['SERVER_NAME']?></a> <p>(Puede que tengas que borrar la cache)</p>");
                 }else{
-                    swal("ERROR!", "No se ha podido realizar el cambio de Tema", "warning");
+                    swal("ERROR!", "No se ha podido realizar el restablecimiento del Core", "warning");
                 }
 
                 console.log(data);

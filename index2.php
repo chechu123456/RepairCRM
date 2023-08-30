@@ -121,7 +121,7 @@
            
             })
             .fail(function() {
-                swal("ERROR!", "Ubo un problema al conectarse al Servidor. Intentalo mas tarde", "warning");
+                swal("ERROR!", "Hubo un problema al conectarse al Servidor. Intentalo mas tarde", "warning");
             });
         });
 
@@ -157,7 +157,7 @@
 
             })
             .fail(function() {
-                swal("ERROR!", "Ubo un problema al conectarse al Servidor. Intentalo mas tarde", "warning");
+                swal("ERROR!", "Hubo un problema al conectarse al Servidor. Intentalo mas tarde", "warning");
             });
         });
      </script>
