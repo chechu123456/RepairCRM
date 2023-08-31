@@ -105,7 +105,7 @@ class Crm{
     //Obtener los ErrorLogs de la web
     public function getErrorLog(){
 //echo "<p>Opción marcada: $this->pluginsWp</p>";
-        if(empty($this->errorLogRaiz)){
+        if(empty($this->errorLogRaiz) && (file_exists($this->pathErrorLog[0]) || file_exists($this->pathErrorLog[1]) ) ){
             $today = date("d-M-Y");
             //Obtener las últimas líneas del fichero del día de hoy
             exec("tail -25 ".$this->pathErrorLog[0]." | grep '$today'", $errorToday);
@@ -138,6 +138,8 @@ class Crm{
                 array_push($this->errorLogRaiz,$errorToday);
             }
             return $this->errorLogRaiz;
+        }else{
+            array_push($this->errorLogRaiz,"No existe el fichero error_logs");
         }
         
     }
@@ -164,20 +166,28 @@ class Crm{
             $errorLogAndPath["Ultimas 30 líneas de errores en: ".$this->pathErrorLog[1]] = $lastErrors;
         }
 
-        return $errorLogAndPath;
+        if(file_exists($this->pathErrorLog[0]) || file_exists($this->pathErrorLog[1])){
+            return $errorLogAndPath;
+        }
 
     }
 
     //Encontrar dentro del Fichero error log, los Fatal Errors
     public function getErrorsFatal(){
-        $palabra = 'Fatal error';
+
+        $palabras = array("Fatal error", "Parse Error");
+
         $encontrado = false;
-        array_walk_recursive($this->errorLogRaiz, function ($value, $key) use ($palabra, &$encontrado) {
-            if (strpos($value, $palabra) !== false) {
-                $encontrado = true;
-                array_push($this->arrayPluginsThemeFailed, $value);
+
+        array_walk_recursive($this->errorLogRaiz, function ($value, $key) use ($palabras, &$encontrado) {
+            foreach ($palabras as $word) {
+                if (strpos($value, $word) !== false) {
+                    $encontrado = true;
+                    array_push($this->arrayPluginsThemeFailed, $value);
+                }
             }
         });
+
         return $encontrado;
     }
 

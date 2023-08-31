@@ -633,7 +633,7 @@
 													<table class="table table-hover m-b-0">
 
 														<?php 
-														
+														if(!empty($datos["getErrorLogTable"])){
 															foreach($datos["getErrorLogTable"] as $key=>$array) { 
 																if(!empty($array)){
 														?>
@@ -658,7 +658,9 @@
 																}
 
 															}
-															
+														}else{
+															echo "<br><h3> No se encontraron los ficheros de los error_logs</h3>";
+														}
 														?>
 													</table>
 												</div>
