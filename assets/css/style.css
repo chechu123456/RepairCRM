@@ -8650,3 +8650,8 @@ h3.titleFixCMS {
     justify-content: flex-end;
     margin-bottom: 30px;
 }
+
+.errorLogFilaTabla{
+    display: flex;
+    justify-content: space-between;
+}

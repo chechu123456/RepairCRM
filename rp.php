@@ -347,9 +347,7 @@
 					<li class="nav-item">
 						<a href="almacenamiento.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Almacenamiento </span></a>
 					</li>
-					<li class="nav-item">
-						<a href="errorLogs.php" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Mostrar ErrorLogs </span></a>
-					</li>
+					
 				</ul>					
 			</div>
 		</div>
